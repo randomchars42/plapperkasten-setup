@@ -7,6 +7,8 @@
   containing music.
 * Playback and volume are controlled via buttons or RFID cards or chips
 
+For this we will use [plapperkasten](https://github.com/randomchars42/plapperkasten).
+
 ## Notes
 
 * The setup procedure is described for **Ubuntu Server 21.10** (or newer) though
