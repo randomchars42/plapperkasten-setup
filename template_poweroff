@@ -1,0 +1,12 @@
+#! /bin/sh
+# https://newbedev.com/how-to-run-a-script-with-systemd-right-before-shutdown
+# $1 will be either "halt", "poweroff", "reboot" or "kexec"
+poweroff_pin=4
+case "$1" in
+    poweroff)
+        # wait for other processes to finish so this happens last
+        /bin/sleep 0.5
+        # this might be expressed a little more elegantly
+        /bin/gpioset -l -Bpull-down gpiochip0 $poweroff_pin=1
+        ;;
+esac
