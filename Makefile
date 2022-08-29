@@ -69,8 +69,6 @@ clean:
 	$(PIP) uninstall pipx
 	@echo uninstalling python
 	- PYENV_ROOT=$(PYENV_PATH) $(PYENV) uninstall $(PYTHON_VERSION)
-	@echo removing files
-	rm -r $(APP_PATH)
 
 # integrate application into the system by
 # - making application available - before
@@ -113,3 +111,5 @@ uninstall: clean
 	- sudo rm /lib/systemd/system-shutdown/$(NAME)_poweroff.shutdown
 	@echo removing udev
 	- sudo rm /etc/udev/rules.d/99-userdev_input.rules
+	@echo removing files
+	sudo rm -r $(APP_PATH)
