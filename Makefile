@@ -8,6 +8,7 @@ APP_PATH := ~/${NAME}
 # python version to use (must include patch number [major.minor.patch])
 PYTHON_VERSION := 3.10.4
 
+override MAKEFILE_DIR=$(dir $(firstword $(MAKEFILE_LIST)))
 # short python version the dirty way: remove trailing patch number
 override PYTHON_VERSION_SHORT := $(basename ${PYTHON_VERSION})
 # install pyenv, python and pipx in directories below ${APP_PATH}
@@ -33,9 +34,10 @@ override APP := ${PIPX_HOME_PATH}/venvs/${NAME}/bin/${NAME}
 #  - making the application available
 setup: ${APP}
 
-# install pyenv after creating ${APP_PATH}
+# create ${APP_PATH}, copy this Makefile into it and install pyenv
 ${PYENV}:
 	mkdir -p ${APP_PATH}
+	cp ${MAKEFILE_DIR}/Makefile ${APP_PATH}/
 	@echo installing pyenv to ${PYENV_PATH}
 	git clone https://github.com/pyenv/pyenv.git ${PYENV_PATH}
 
