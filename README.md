@@ -68,6 +68,14 @@ ssh-copy-id -i /home/$USER/.ssh/$hostname $remoteuser@$hostname
 ## On the remote machine (your new plapperkasten)
 
 * (login remotely via ssh ;) )
+* install prerequisites for building python:
+
+```bash
+sudo apt-get update; sudo apt-get install make build-essential libssl-dev zlib1g-dev \
+libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
+libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+```
+
 * install prerequesites if you plan to use the `inputgpiod` plugin:
 
 ```bash
