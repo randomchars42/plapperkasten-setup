@@ -68,6 +68,11 @@ ssh-copy-id -i /home/$USER/.ssh/$hostname $remoteuser@$hostname
 ## On the remote machine (your new plapperkasten)
 
 * (login remotely via ssh ;) )
+* install prerequesites if you plan to use the `inputgpiod` plugin:
+
+```bash
+sudo apt install python3-gpiod
+```
 
 ### Short version
 
@@ -120,7 +125,7 @@ PYENV_ROOT=${pk_pyenv_path} ${pk_pyenv} install ${pk_python_version}
 ${pk_pip} install pipx
 
 # install plapperkasten
-PIPX_HOME=${pk_pipx_home_path} ${pk_pipx} install ${pk_name}
+PIPX_HOME=${pk_pipx_home_path} ${pk_pipx} --system-site-packages install ${pk_name}
 ```
 
 #### Automatic startup of `plapperkasten`

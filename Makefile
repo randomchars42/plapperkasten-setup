@@ -54,7 +54,9 @@ $(PIPX_MODULE): $(PYTHON_VERSION_PATH)
 # make application available application after installing $(PIPX_MODULE)
 $(APP): $(PIPX_MODULE)
 	@echo installing $(NAME)
-	PIPX_HOME=$(PIPX_HOME_PATH) $(PIPX) install $(NAME)
+	#  --system-site-packages is needed to include libs only installable via
+	#  python3-gpiod on ubuntu
+	PIPX_HOME=$(PIPX_HOME_PATH) $(PIPX) --system-site-packages install $(NAME)
 
 run:
 	$(NAME)
