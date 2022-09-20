@@ -77,7 +77,7 @@ clean:
 # - creating and enabling the system service - and
 # - creating a shutdown routine - and
 # - creating a udev rule
-install: setup /etc/systemd/system/$(NAME).service /lib/systemd/system-shutdown/$(NAME)_poweroff.shutdown /etc/udev/rules.d/99-userdev_input.rules
+install: setup /etc/systemd/system/$(NAME).service /lib/systemd/system-shutdown/$(NAME)_poweroff.shutdown /etc/udev/rules.d/99-userdev_input.rules /etc/asound.conf
 
 # create service if template_service has changed
 /etc/systemd/system/$(NAME).service: template_service
@@ -103,6 +103,11 @@ else
 	sudo mv ./99-userdev_input.rules /etc/udev/rules.d/
 endif
 
+/etc/asound.conf: template_asound
+	sudo mv /etc/asound.conf /etc/asound.conf.bk
+	sudo cp template_asound /etc/asound.conf
+	sudo alsactl restore
+
 # uninstall system integration after removing the application
 uninstall: clean
 	@echo removing service
@@ -113,5 +118,9 @@ uninstall: clean
 	- sudo rm /lib/systemd/system-shutdown/$(NAME)_poweroff.shutdown
 	@echo removing udev
 	- sudo rm /etc/udev/rules.d/99-userdev_input.rules
+	@echo restoring ALSA configuration
+	sudo rm /etc/asound.conf
+	sudo mv /etc/asound.conf.bk /etc/asound.conf
+	sudo alsactl restore
 	@echo removing files
 	sudo rm -r $(APP_PATH)

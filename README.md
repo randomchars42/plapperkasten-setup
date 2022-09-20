@@ -161,6 +161,24 @@ sudo systemctl enable plapperkasten.service
 sudo systemctl start plapperkasten.service
 ```
 
+#### Configure ALSA in case you have a soundcard connected to the board
+
+```bash
+sudo mv /etc/asound.conf /etc/ascound.conf.bk
+sudo tee /etc/asound.conf <<EOF
+pcm.hifiberryMiniAmp {
+    type softvol
+    slave.pcm "plughw:0"
+    control.name "Master"
+    control.card 0
+}
+pcm.!default {
+    type plug
+    slave.pcm "hifiberryMiniAmp"
+}
+EOF
+```
+
 #### Make sure the power is cut when using Pimoroni OnOffShim without software
 
 The guys from Pimoroni ship an installer for their scripts so that OnOffShim
