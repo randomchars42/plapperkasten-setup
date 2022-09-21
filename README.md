@@ -71,9 +71,17 @@ ssh-copy-id -i /home/$USER/.ssh/$hostname $remoteuser@$hostname
 * install prerequisites for building python:
 
 ```bash
-sudo apt-get update; sudo apt-get install make build-essential libssl-dev zlib1g-dev \
+sudo apt-get update
+sudo apt-get install build-essential libssl-dev zlib1g-dev \
 libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
-libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev \
+liblzma-dev
+
+# optional packages:
+# `mpd` and `mpc` for media playback via mpd (plugin `mpdclient`)
+# `alsa-utils` for volume controll / switching cards (plugin `volumectrlalsa`)
+# `python3-lgpio` for userland access to GPIO pins (plugin `inputgpiod`)
+sudo apt install mpd mpc alsa-utils python3-lgpio
 ```
 
 * install prerequesites if you plan to use the `inputgpiod` plugin:
