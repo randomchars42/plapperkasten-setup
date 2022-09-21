@@ -115,6 +115,10 @@ endif
 
 # create mpd.conf if template_mpd has changed
 /etc/mpd.conf: template_mpd
+	sudo mkdir -p ${DATA_PATH}/Media
+	sudo mkdir -p ${DATA_PATH}/Playlists
+	sudo mkdir -p ${DATA_PATH}/MPD
+	sudo chown -r ${INSTALL_USER}:${INSTALL_GROUP} ${DATA_PATH}
 	sudo mv -n /etc/mpd.conf /etc/mpd.conf.bk
 	envsubst '$${INSTALL_USER} $${DATA_PATH}' < template_mpd > mpd.conf
 	sudo cp mpd.conf /etc/mpd.conf

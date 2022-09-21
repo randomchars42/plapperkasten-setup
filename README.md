@@ -79,7 +79,7 @@ liblzma-dev
 
 # optional packages:
 # `mpd` and `mpc` for media playback via mpd (plugin `mpdclient`)
-# `alsa-utils` for volume controll / switching cards (plugin `volumectrlalsa`)
+# `alsa-utils` for volume controll / switching cards (plugin `volumealsa`)
 # `python3-lgpio` for userland access to GPIO pins (plugin `inputgpiod`)
 sudo apt install mpd mpc alsa-utils python3-lgpio
 ```
@@ -192,24 +192,26 @@ sudo alsactl restore
 ### Configure MPD
 
 ```bash
-# change user if not on ubuntu server
+# change user and group if not on ubuntu server
 pk_user=ubuntu
+pk_group=ubuntu
 # change path to where your data resides
-pk_path_data=/data/plapperkasten
+pk_data_path=/data/plapperkasten
 
 # make sure paths exist
-mkdir -p ${pk_path_data}/Media
-mkdir -p ${pk_path_data}/Playlists
-mkdir -p ${pk_path_data}/MPD
+mkdir -p ${pk_data_path}/Media
+mkdir -p ${pk_data_path}/Playlists
+mkdir -p ${pk_data_path}/MPD
+sudo chown -r ${pk_user}:${pk_group} ${pk_data_path}
 
 sudo mv /etc/alsa.conf /etc/alsa.conf.bk
 sudo tee /etc/asound.conf <<EOF
-music_directory         "${pk_path_data}/Media"
-playlist_directory      "${pk_path_data}/Playlists"
-db_file                 "${pk_path_data}/MPD/tag_cache"
-log_file                "${pk_path_data}/MPD/mpd.log"
-state_file              "${pk_path_data}/MPD/state"
-sticker_file            "${pk_path_data}/MPD/sticker.sql"
+music_directory         "${pk_data_path}/Media"
+playlist_directory      "${pk_data_path}/Playlists"
+db_file                 "${pk_data_path}/MPD/tag_cache"
+log_file                "${pk_data_path}/MPD/mpd.log"
+state_file              "${pk_data_path}/MPD/state"
+sticker_file            "${pk_data_path}/MPD/sticker.sql"
 user                    "${pk_user}"
 group                   "audio"
 bind_to_address         "any"
