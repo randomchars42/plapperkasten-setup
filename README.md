@@ -177,6 +177,53 @@ pcm.!default {
     slave.pcm "hifiberryMiniAmp"
 }
 EOF
+# reload ALSA
+sudo alsactl restore
+```
+
+### Configure MPD
+
+```bash
+# change user if not on ubuntu server
+pk_user=ubuntu
+# change path to where your data resides
+pk_path_data=/data/plapperkasten
+
+# make sure paths exist
+mkdir -p ${pk_path_data}/Media
+mkdir -p ${pk_path_data}/Playlists
+mkdir -p ${pk_path_data}/MPD
+
+sudo mv /etc/alsa.conf /etc/alsa.conf.bk
+sudo tee /etc/asound.conf <<EOF
+music_directory         "${pk_path_data}/Media"
+playlist_directory      "${pk_path_data}/Playlists"
+db_file                 "${pk_path_data}/MPD/tag_cache"
+log_file                "${pk_path_data}/MPD/mpd.log"
+state_file              "${pk_path_data}/MPD/state"
+sticker_file            "${pk_path_data}/MPD/sticker.sql"
+user                    "${pk_user}"
+group                   "audio"
+bind_to_address         "any"
+restore_paused          "yes"
+port                    "6600"
+replaygain              "auto"
+volume_normalization    "yes"
+filesystem_charset      "UTF-8"
+input {
+        plugin "curl"
+}
+audio_output {
+        type            "alsa"
+        name            "MPD"
+        mixer_control   "Master"        # optional
+}
+playlist_plugin {
+        name "m3u"
+        enabled "true"
+}
+EOF
+sudo systemctl restart mpd
 ```
 
 #### Make sure the power is cut when using Pimoroni OnOffShim without software

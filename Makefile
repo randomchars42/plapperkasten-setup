@@ -7,6 +7,8 @@ export INSTALL_GROUP := ubuntu
 APP_PATH := ~/$(NAME)
 # python version to use (must include patch number [major.minor.patch])
 PYTHON_VERSION := 3.10.4
+# path under which the media files reside (look at template_mpd)
+export DATA_PATH := /data/plapperkasten
 
 override MAKEFILE_DIR=$(dir $(firstword $(MAKEFILE_LIST)))
 # short python version the dirty way: remove trailing patch number
@@ -77,7 +79,9 @@ clean:
 # - creating and enabling the system service - and
 # - creating a shutdown routine - and
 # - creating a udev rule
-install: setup /etc/systemd/system/$(NAME).service /lib/systemd/system-shutdown/$(NAME)_poweroff.shutdown /etc/udev/rules.d/99-userdev_input.rules /etc/asound.conf
+# - configuring ALSA
+# - configuring MPD
+install: setup /etc/systemd/system/$(NAME).service /lib/systemd/system-shutdown/$(NAME)_poweroff.shutdown /etc/udev/rules.d/99-userdev_input.rules /etc/asound.conf /etc/mpd.conf
 
 # create service if template_service has changed
 /etc/systemd/system/$(NAME).service: template_service
@@ -103,10 +107,18 @@ else
 	sudo mv ./99-userdev_input.rules /etc/udev/rules.d/
 endif
 
+# create asound.conf if template_asound has changed
 /etc/asound.conf: template_asound
-	sudo mv /etc/asound.conf /etc/asound.conf.bk
+	sudo mv -n /etc/asound.conf /etc/asound.conf.bk
 	sudo cp template_asound /etc/asound.conf
 	sudo alsactl restore
+
+# create mpd.conf if template_mpd has changed
+/etc/mpd.conf: template_mpd
+	sudo mv -n /etc/mpd.conf /etc/mpd.conf.bk
+	envsubst '$${INSTALL_USER} $${DATA_PATH}' < template_mpd > mpd.conf
+	sudo cp mpd.conf /etc/mpd.conf
+	sudo systemctl restart mpd
 
 # uninstall system integration after removing the application
 uninstall: clean
@@ -122,5 +134,9 @@ uninstall: clean
 	sudo rm /etc/asound.conf
 	sudo mv /etc/asound.conf.bk /etc/asound.conf
 	sudo alsactl restore
+	@echo restoring MPD configuration
+	sudo rm /etc/mpd.conf
+	sudo mv /etc/mpd.conf.bk /etc/mpd.conf
+	sudo systemctl restart mpd
 	@echo removing files
 	sudo rm -r $(APP_PATH)

@@ -1,0 +1,30 @@
+music_directory         "${DATA_PATH}/Media"
+playlist_directory      "${DATA_PATH}/Playlists"
+db_file                 "${DATA_PATH}/MPD/tag_cache"
+log_file                "${DATA_PATH}/MPD/mpd.log"
+state_file              "${DATA_PATH}/MPD/state"
+sticker_file            "${DATA_PATH}/MPD/sticker.sql"
+user                    "${INSTALL_USER}"
+group                   "audio"
+bind_to_address         "any"
+restore_paused          "yes"
+port                    "6600"
+replaygain              "auto"
+volume_normalization    "yes"
+filesystem_charset      "UTF-8"
+input {
+        plugin "curl"
+}
+audio_output {
+        type            "alsa"
+        name            "MPD"
+        mixer_control   "Master"        # optional
+#       device          "hw:CARD=sndrpihifiberry,DEV=0" # optional
+#       mixer_type      "hardware"      # optional
+#       mixer_device    "default"       # optional
+#       mixer_index     "0"             # optional
+}
+playlist_plugin {
+        name "m3u"
+        enabled "true"
+}
