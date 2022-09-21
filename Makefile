@@ -24,6 +24,7 @@ override PYENV := $(PYENV_PATH)/bin/pyenv
 override PIP := $(PYTHON) -m pip
 override PIPX := $(PYTHON) -m pipx
 override APP := $(PIPX_HOME_PATH)/venvs/$(NAME)/bin/$(NAME)
+override APP_CONFIG_PATH := /home/$(INSTALL_USER)/.config/$(NAME)
 
 # files with those names should not trigger any recipe
 .PHONY = setup install clean uninstall run upgrade
@@ -53,8 +54,24 @@ $(PIPX_MODULE): $(PYTHON_VERSION_PATH)
 	@echo installing pipx
 	$(PIP) install pipx
 
-# make application available application after installing $(PIPX_MODULE)
-$(APP): $(PIPX_MODULE)
+$(APP_CONFIG_PATH):
+	mkdir -p $(APP_CONFIG_PATH)
+
+$(APP_CONFIG_PATH)/config.yaml: template_pk_conf
+	@echo creating config.yaml if it does not already exist
+	cp -n template_pk_conf $(APP_CONFIG_PATH)/config.yaml
+
+$(APP_CONFIG_PATH)/events.map: template_eventsmap
+	@echo creating events.map if it does not already exist
+	cp -n template_eventsmap $(APP_CONFIG_PATH)/events.map
+
+$(APP_CONFIG_PATH)/mpdclient_status.map: template_mpdclientstatusmap
+	@echo creating mpdclient_status.map if it does not already exist
+	cp -n template_mpdclientstatusmap $(APP_CONFIG_PATH)/mpdclient_status.map
+
+# make application available application after installing $(PIPX_MODULE) and
+# config files
+$(APP): $(PIPX_MODULE) $(APP_CONFIG_PATH) $(APP_CONFIG_PATH)/config.yaml $(APP_CONFIG_PATH)/events.map $(APP_CONFIG_PATH)/mpdclient_status.map
 	@echo installing $(NAME)
 	#  --system-site-packages is needed to include libs only installable via
 	#  python3-gpiod on ubuntu

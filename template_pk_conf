@@ -1,0 +1,30 @@
+# overwrite settings here
+core:
+  system:
+    debug: True
+  events:
+    # pass those events to all plugins that listen
+    passthrough: ['play','stop','toggle','next','previous','load_source','volume_increase','volume_decrease','volume_max']
+  plugins:
+    # do not load example plugin
+    blacklist: ['example']
+plugins:
+  inputgpiod:
+    chip: 0
+    # listen to those GPIO pins
+    press_short: [27,12,25,13,24]
+    # accept additional long press events from those pins
+    press_long: [12,17]
+    # duration in seconds
+    long_press_duration: 2
+  inputdevinputevent:
+    # RFID device sends on /dev/input/event0
+    devices: ['/dev/input/event0']
+  autoshutdown:
+    # shutdown after 5 minutes (5 x 60 s)
+    idle_time: 300
+  volumealsa:
+    # maximal volume [%]
+    max: 100
+    # step volume up / down [%]
+    step: 1

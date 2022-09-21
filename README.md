@@ -127,7 +127,6 @@ pk_pip=${pk_python} -m pip
 pk_pipx=${pk_python} -m pipx
 pk_app=${pk_pipx_home_path}/venvs/${pk_name}/bin/${pk_name}
 
-
 mkdir -p ${pk_app_path}
 
 # install pyenv to provide a custom and local python version
@@ -167,6 +166,19 @@ EOF
 
 sudo systemctl enable plapperkasten.service
 sudo systemctl start plapperkasten.service
+```
+
+#### Create configuration files
+
+```bash
+# this is where everything will be installed
+pk_app_config_path="~/.config/plapperkasten"
+
+mkdir -p ${pk_app_config_path}
+
+touch ${pk_app_config_path}/config.yaml
+touch ${pk_app_config_path}/events.map
+touch ${pk_app_config_path}/mpdclient_status.map
 ```
 
 #### Configure ALSA in case you have a soundcard connected to the board
