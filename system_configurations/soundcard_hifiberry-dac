@@ -1,0 +1,2 @@
+# plk_soundcard_hifiberry-dac
+dtoverlay=hifiberry-dac

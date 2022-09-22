@@ -1,0 +1,8 @@
+# plk_wlan
+wifis:
+  wlan0:
+    dhcp4: true
+    optional: true
+    access-points:
+      "$wlan_ssid":
+        password: "$wlan_password"
