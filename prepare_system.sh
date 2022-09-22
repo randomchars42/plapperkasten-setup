@@ -251,6 +251,35 @@ configure_hardware "$soundcard"
 configure_hardware "$display"
 
 ################################################################################
+# create paths
+
+echo -e "creating paths"
+sudo mkdir -p "$system/data/ebox/Media/Audiobooks/"
+sudo mkdir -p "$system/data/ebox/Media/Music/"
+sudo mkdir -p "$system/data/ebox/Playlists/"
+sudo mkdir -p "$system/data/ebox/MPD/"
+echo -e "paths created"
+
+################################################################################
+# create poweroff script
+
+sudo tee -a $system/lib/systemd/system-shutdown/plapperkasten_poweroff.shutdown <<EOF
+#! /bin/sh
+# https://newbedev.com/how-to-run-a-script-with-systemd-right-before-shutdown
+# $1 will be either "halt", "poweroff", "reboot" or "kexec"
+poweroff_pin=4
+case "$1" in
+    poweroff|halt)
+        # wait for other processes to finish so this happens last
+        /bin/sleep 0.5
+        # this might be expressed a little more elegantly
+        /bin/gpioset -l -Bpull-down gpiochip0 $poweroff_pin=1
+        ;;
+esac
+EOF
+sudo chmod +x /lib/systemd/system-shutdown/plapperkasten_poweroff.shutdown
+
+################################################################################
 # finish
 
 sleep 1
