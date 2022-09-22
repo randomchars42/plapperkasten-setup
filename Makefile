@@ -57,17 +57,17 @@ $(PIPX_MODULE): $(PYTHON_VERSION_PATH)
 $(APP_CONFIG_PATH):
 	mkdir -p $(APP_CONFIG_PATH)
 
-$(APP_CONFIG_PATH)/config.yaml: template_pk_conf
+$(APP_CONFIG_PATH)/config.yaml: templates/template_pk_conf
 	@echo creating config.yaml if it does not already exist
-	cp -n template_pk_conf $(APP_CONFIG_PATH)/config.yaml
+	cp -n templates/template_pk_conf $(APP_CONFIG_PATH)/config.yaml
 
-$(APP_CONFIG_PATH)/events.map: template_eventsmap
+$(APP_CONFIG_PATH)/events.map: templates/template_eventsmap
 	@echo creating events.map if it does not already exist
-	cp -n template_eventsmap $(APP_CONFIG_PATH)/events.map
+	cp -n templates/template_eventsmap $(APP_CONFIG_PATH)/events.map
 
-$(APP_CONFIG_PATH)/mpdclient_status.map: template_mpdclientstatusmap
+$(APP_CONFIG_PATH)/mpdclient_status.map: templates/template_mpdclientstatusmap
 	@echo creating mpdclient_status.map if it does not already exist
-	cp -n template_mpdclientstatusmap $(APP_CONFIG_PATH)/mpdclient_status.map
+	cp -n templates/template_mpdclientstatusmap $(APP_CONFIG_PATH)/mpdclient_status.map
 
 # make application available application after installing $(PIPX_MODULE) and
 # config files
@@ -101,44 +101,44 @@ clean:
 install: setup /etc/systemd/system/$(NAME).service /lib/systemd/system-shutdown/$(NAME)_poweroff.shutdown /etc/udev/rules.d/99-userdev_input.rules /etc/asound.conf /etc/mpd.conf
 
 # create service if template_service has changed
-/etc/systemd/system/$(NAME).service: template_service
-	envsubst '$${NAME} $${INSTALL_USER} $${INSTALL_GROUP}' < template_service > $(NAME).service
-	sudo mv $(NAME).service /etc/systemd/system/
+/etc/systemd/system/$(NAME).service: templates/template_service
+	envsubst '$${NAME} $${INSTALL_USER} $${INSTALL_GROUP}' < templates/template_service > templates/$(NAME).service
+	sudo mv templates/$(NAME).service /etc/systemd/system/
 	sudo systemctl enable $(NAME).service
 
 # create shutdown routine if template_poweroff has changed
-/lib/systemd/system-shutdown/$(NAME)_poweroff.shutdown: template_poweroff
+/lib/systemd/system-shutdown/$(NAME)_poweroff.shutdown: templates/template_poweroff
 ifeq (, $(shell which gpioset))
 	@echo no gpioset in $(PATH), consider installing python3-libgpiod
 else
-	sudo cp template_poweroff /lib/systemd/system-shutdown/$(NAME)_poweroff.shutdown
+	sudo cp templates/template_poweroff /lib/systemd/system-shutdown/$(NAME)_poweroff.shutdown
 	sudo chmod +x /lib/systemd/system-shutdown/$(NAME)_poweroff.shutdown
 endif
 
 # create udev rules if template_udev has changed
-/etc/udev/rules.d/99-userdev_input.rules: template_udev
+/etc/udev/rules.d/99-userdev_input.rules: templates/template_udev
 ifeq (, $(shell which gpioset))
 	@echo no gpioset in $(PATH), consider installing python3-libgpiod
 else
-	envsubst '$${INSTALL_GROUP}' < template_udev > 99-userdev_input.rules
-	sudo mv ./99-userdev_input.rules /etc/udev/rules.d/
+	envsubst '$${INSTALL_GROUP}' < templates/template_udev > templates/99-userdev_input.rules
+	sudo mv templates/99-userdev_input.rules /etc/udev/rules.d/
 endif
 
 # create asound.conf if template_asound has changed
-/etc/asound.conf: template_asound
+/etc/asound.conf: templates/template_asound
 	sudo mv -n /etc/asound.conf /etc/asound.conf.bk
-	sudo cp template_asound /etc/asound.conf
+	sudo cp templates/template_asound /etc/asound.conf
 	sudo alsactl restore
 
 # create mpd.conf if template_mpd has changed
-/etc/mpd.conf: template_mpd
+/etc/mpd.conf: templates/template_mpd
 	sudo mkdir -p ${DATA_PATH}/Media
 	sudo mkdir -p ${DATA_PATH}/Playlists
 	sudo mkdir -p ${DATA_PATH}/MPD
 	sudo chown -r ${INSTALL_USER}:${INSTALL_GROUP} ${DATA_PATH}
 	sudo mv -n /etc/mpd.conf /etc/mpd.conf.bk
-	envsubst '$${INSTALL_USER} $${DATA_PATH}' < template_mpd > mpd.conf
-	sudo cp mpd.conf /etc/mpd.conf
+	envsubst '$${INSTALL_USER} $${DATA_PATH}' < templates/template_mpd > templates/mpd.conf
+	sudo mv templates/mpd.conf /etc/mpd.conf
 	sudo systemctl restart mpd
 
 # uninstall system integration after removing the application

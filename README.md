@@ -269,7 +269,7 @@ sudo tee -a /lib/systemd/system-shutdown/plapperkasten_poweroff.shutdown <<EOF
 # $1 will be either "halt", "poweroff", "reboot" or "kexec"
 poweroff_pin=4
 case "$1" in
-    poweroff)
+    poweroff|halt)
         # wait for other processes to finish so this happens last
         /bin/sleep 0.5
         # this might be expressed a little more elegantly
