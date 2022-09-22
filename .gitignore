@@ -11,3 +11,5 @@ __pycache__
 *.sw[op]
 Session.vim
 tags
+
+/mnt/*
