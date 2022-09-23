@@ -1,11 +1,24 @@
 #!/usr/bin/env bash
 
+# do not change these instead use `config.conf`
+export OS_DEBIAN="debian"
+export OS_UBUNTU="ubuntu"
+export COUNTRY_GERMANY="DE"
+
+setup_for="$OS_DEBIAN"
+unmount=1
 device=""
 hostname=""
-wlan_ssid="WLAN-Kabel-2"
+plk_user=""
+plk_password=""
+wlan_ssid=""
 wlan_password=""
+wlan_country=""
 display=""
 soundcard=""
+
+[[ -f config.conf ]] &&
+    source config.conf
 
 ################################################################################
 # do not edit below
@@ -112,7 +125,6 @@ then
 
     echo -e "Set device (default: \"$device_default\"): "
     echo -e "Device /dev/sdX:"
-
     while [[ ! $device =~ ^[a-z]{1}$ ]]
     do
         echo -en "\e[1A\e[K"
@@ -122,9 +134,7 @@ then
             device="$device_default"
         fi
     done
-
     echo -e "Setting device: $device"
-
     echo
 fi
 
@@ -136,7 +146,6 @@ then
 
     echo -e "Set hostname (default: \"$hostname_default\"): "
     echo -e "Hostname:"
-
     while [[ ! $hostname =~ ^[a-zA-Z0-9._]+$ ]]
     do
         echo -en "\e[1A\e[K"
@@ -146,9 +155,7 @@ then
             hostname="$hostname_default"
         fi
     done
-
     echo -e "Setting hostname: $hostname"
-
     echo
 fi
 
@@ -162,6 +169,25 @@ then
     [[ ! -z $wlan_ssid ]] &&
         read -s -p "WLAN password:" wlan_password
     echo
+fi
+
+if [[ $setup_for == "$OS_DEBIAN" && -z $plk_user || -z $plk_password ]]
+then
+    echo -e "----------------------------------------------------"
+    echo -e "Setup User"
+
+    echo -e "User: $plk_user"
+    while [[ ! $plk_user =~ ^[a-zA-Z0-9._]+$ ]]
+    do
+        echo -en "\e[1A\e[K"
+        read -p "User: " plk_user
+    done
+    echo -e "Password (a-zA-Z0-9._+#+*:): $plk_password"
+    while [[ ! $plk_password =~ ^[a-zA-Z0-9._#+*:]+$ ]]
+    do
+        echo -en "\e[1A\e[K"
+        read -p "Password: " plk_password
+    done
 fi
 
 if [[ -z $display ]]
@@ -206,6 +232,7 @@ echo -e "mounting partitions"
 if ! sudo mount "$boot_dev" "$boot"
 then
     echo -e "could not mount $bootdev"
+    #exit 1
 fi
 
 [[ ! -f "$system" ]] &&
@@ -214,6 +241,7 @@ fi
 if ! sudo mount "$system_dev" "$system"
 then
     echo -e "could not mount $system_dev"
+    #exit 1
 fi
 
 ################################################################################
@@ -229,6 +257,17 @@ else
 fi
 
 ################################################################################
+# configure a user
+
+
+if [[ "$setup_for" == "$OS_DEBIAN" ]]
+then
+    echo -e "configuring user: $plk_user with \"$plk_password\""
+    sudo echo -e "$plk_user:$(openssl passwd -6 $plk_password)" > "$boot/userconf.txt"
+    echo -e "user configured"
+fi
+
+################################################################################
 # configure wlan
 
 echo -e "configuring wlan: $wlan_ssid"
@@ -236,8 +275,18 @@ if [[ -z $(grep -F "# plk_wlan" "$boot/network-config") && ! -z $wlan_ssid ]]
 then
     export wlan_ssid
     export wlan_password
-    envsubst '$wlan_ssid $wlan_password' < "$cfg/wlan" > wlan_tmp
-    sudo cat wlan_tmp > "$boot/network-config"
+    export wlan_country
+    if [[ "$setup_for" == "$OS_DEBIAN" ]]
+    then
+        envsubst '$wlan_ssid $wlan_password $wlan_country' < "$cfg/wpa_supplicant" > wlan_tmp
+        sudo cat wlan_tmp > "$boot/wpa_supplicant.conf"
+        sudo chmod 600 "$boot/wpa_supplicant.conf"
+    elif [[ "$setup_for" == "$OS_UBUNTU" ]]
+    then
+        envsubst '$wlan_ssid $wlan_password' < "$cfg/wlan" > wlan_tmp
+        sudo cat wlan_tmp > "$boot/network-config"
+        sudo chmod 600 "$boot/network-config"
+    fi
     rm wlan_tmp
     echo -e "wlan configured"
 else
@@ -251,24 +300,36 @@ configure_hardware "$soundcard"
 configure_hardware "$display"
 
 ################################################################################
+# enable ssh
+
+# ssh needs to be enabled on Raspbian OS Lite
+# but not on ubuntu server
+if [[ "$setup_for" == "$OS_DEBIAN" ]]
+then
+    echo -e "enabling ssh"
+    sudo touch "$boot/ssh"
+    echo -e "ssh enabled"
+fi
+
+################################################################################
 # create paths
 
 echo -e "creating paths"
-sudo mkdir -p "$system/data/ebox/Media/Audiobooks/"
-sudo mkdir -p "$system/data/ebox/Media/Music/"
-sudo mkdir -p "$system/data/ebox/Playlists/"
-sudo mkdir -p "$system/data/ebox/MPD/"
+sudo mkdir -p "$system/data/plapperkasten/Media/Audiobooks/"
+sudo mkdir -p "$system/data/plapperkasten/Media/Music/"
+sudo mkdir -p "$system/data/plapperkasten/Playlists/"
+sudo mkdir -p "$system/data/plapperkasten/MPD/"
 echo -e "paths created"
 
 ################################################################################
 # create poweroff script
 
-sudo tee -a $system/lib/systemd/system-shutdown/plapperkasten_poweroff.shutdown <<EOF
+sudo tee $system/lib/systemd/system-shutdown/plapperkasten_poweroff.shutdown <<EOF
 #! /bin/sh
 # https://newbedev.com/how-to-run-a-script-with-systemd-right-before-shutdown
-# $1 will be either "halt", "poweroff", "reboot" or "kexec"
+# \$1 will be either "halt", "poweroff", "reboot" or "kexec"
 poweroff_pin=4
-case "$1" in
+case "\$1" in
     poweroff|halt)
         # wait for other processes to finish so this happens last
         /bin/sleep 0.5
@@ -277,18 +338,32 @@ case "$1" in
         ;;
 esac
 EOF
-sudo chmod +x /lib/systemd/system-shutdown/plapperkasten_poweroff.shutdown
+sudo chmod +x $system/lib/systemd/system-shutdown/plapperkasten_poweroff.shutdown
+
+################################################################################
+# copy plapperkasten files to the new system
+
+echo -e "moving setup files to new system"
+sudo mkdir -p "$system/data/plapperkasten/Setup"
+sudo cp -r ./templates "$system/data/plapperkasten/Setup/"
+sudo cp -r ./README.md "$system/data/plapperkasten/Setup/"
+sudo cp -r ./Makefile "$system/data/plapperkasten/Setup/"
+echo -e "setup files can be found under $system/data/plapperkasten/Setup"
 
 ################################################################################
 # finish
 
 sleep 1
 
-echo -e "unmounting partitions"
-sudo umount "$boot"
-sudo umount "$system"
+if [[ "$unmount" -gt 0 ]]
+then
+    echo -e "unmounting partitions"
+    sudo umount "$boot"
+    sudo umount "$system"
+fi
 
-echo -e "Boot device with sd-card inserted (two times if WLAN should be used)."
-echo -e "Run ./prepare_ssh.sh"
+echo -e "Boot device with sd-card inserted."
+echo -e "Run ./prepare_ssh.sh $hostname $plk_user"
+echo -e "On $hostname go to /data/plapperkasten/Setup and run \`make\` and \`sudo make install\`"
 read -p "Press [ENTER] to continue"
 exit 0

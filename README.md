@@ -266,9 +266,9 @@ So we create a corresponding script:
 sudo tee -a /lib/systemd/system-shutdown/plapperkasten_poweroff.shutdown <<EOF
 #! /bin/sh
 # https://newbedev.com/how-to-run-a-script-with-systemd-right-before-shutdown
-# $1 will be either "halt", "poweroff", "reboot" or "kexec"
+# \$1 will be either "halt", "poweroff", "reboot" or "kexec"
 poweroff_pin=4
-case "$1" in
+case "\$1" in
     poweroff|halt)
         # wait for other processes to finish so this happens last
         /bin/sleep 0.5

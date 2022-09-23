@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
-# edit the hostname
-hostname=plapperkasten1
-# edit the remote user if you are not using ubuntu server
-remoteuser=ubuntu
+[[ -f config.conf ]] &&
+    source config.conf
+
+[[ -z $hostname ]] &&
+    read -p "Hostname: " hostname
+[[ -r $plk_user ]] &&
+    read -p "User: " plk_user
 
 if [[ -z $(grep -F "$hostname" "/home/$USER/.ssh/known_hosts") ]]
 then
@@ -13,4 +16,4 @@ fi
 [[ ! -f /home/$USER/.ssh/$hostname ]] &&
   ssh-keygen -b 4096 -f /home/$USER/.ssh/$hostname
 
-ssh-copy-id -i /home/$USER/.ssh/$hostname $remoteuser@$hostname
+ssh-copy-id -i /home/$USER/.ssh/$hostname $plk_user@$hostname

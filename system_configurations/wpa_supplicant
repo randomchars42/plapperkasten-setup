@@ -1,0 +1,8 @@
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=$wlan_country
+
+network={
+ ssid="$wlan_ssid"
+ psk="$wlan_password"
+}
