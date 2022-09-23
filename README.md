@@ -75,13 +75,14 @@ sudo apt-get update
 sudo apt-get install build-essential libssl-dev zlib1g-dev \
 libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
 libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev \
-liblzma-dev
+liblzma-dev git
 
 # optional packages:
 # `mpd` and `mpc` for media playback via mpd (plugin `mpdclient`)
 # `alsa-utils` for volume controll / switching cards (plugin `volumealsa`)
 # `python3-lgpio` for userland access to GPIO pins (plugin `inputgpiod`)
-sudo apt install mpd mpc alsa-utils python3-lgpio
+
+sudo apt install mpd mpc alsa-utils python3-libgpiod
 ```
 
 * install prerequesites if you plan to use the `inputgpiod` plugin:
@@ -140,7 +141,7 @@ PYENV_ROOT=${pk_pyenv_path} ${pk_pyenv} install ${pk_python_version}
 ${pk_pip} install pipx
 
 # install plapperkasten
-PIPX_HOME=${pk_pipx_home_path} ${pk_pipx} --system-site-packages install ${pk_name}
+PIPX_HOME=${pk_pipx_home_path} ${pk_pipx} install --system-site-packages ${pk_name}
 ```
 
 #### Automatic startup of `plapperkasten`

@@ -75,7 +75,7 @@ $(APP): $(PIPX_MODULE) $(APP_CONFIG_PATH) $(APP_CONFIG_PATH)/config.yaml $(APP_C
 	@echo installing $(NAME)
 	#  --system-site-packages is needed to include libs only installable via
 	#  python3-gpiod on ubuntu
-	PIPX_HOME=$(PIPX_HOME_PATH) $(PIPX) --system-site-packages install $(NAME)
+	PIPX_HOME=$(PIPX_HOME_PATH) $(PIPX) install --system-site-packages $(NAME)
 
 run:
 	$(NAME)
