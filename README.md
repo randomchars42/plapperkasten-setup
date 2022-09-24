@@ -51,8 +51,8 @@ chmod +x prepare_ssh.sh
 ```bash
 # edit the hostname
 hostname=plapperkasten1
-# edit the remote user if you are not using ubuntu server
-remoteuser=ubuntu
+# edit the remote user if you are not using Debian Bullseye
+remoteuser=plapperkasten
 
 if [[ -z $(grep -F "$hostname" "/home/$USER/.ssh/known_hosts") ]]
 then
@@ -81,14 +81,7 @@ liblzma-dev git
 # `mpd` and `mpc` for media playback via mpd (plugin `mpdclient`)
 # `alsa-utils` for volume controll / switching cards (plugin `volumealsa`)
 # `python3-lgpio` for userland access to GPIO pins (plugin `inputgpiod`)
-
 sudo apt install mpd mpc alsa-utils python3-libgpiod
-```
-
-* install prerequesites if you plan to use the `inputgpiod` plugin:
-
-```bash
-sudo apt install python3-gpiod
 ```
 
 ### Short version
@@ -113,7 +106,7 @@ This version is equivalent to `make && sudo make install`
 
 ```bash
 # this is where everything will be installed
-pk_app_path="~/plapperkasten"
+pk_app_path="/data/plapperkasten/plapperkasten"
 # use this python version
 pk_python_version="3.10.4"
 
@@ -147,9 +140,14 @@ PIPX_HOME=${pk_pipx_home_path} ${pk_pipx} install --system-site-packages ${pk_na
 #### Automatic startup of `plapperkasten`
 
 ```bash
-# change user and group if not on ubuntu server
-pk_user=ubuntu
-pk_group=ubuntu
+# change user and group if not on Debian Bullseye after `plapperkasten-setup`
+pk_user=plapperkasten
+pk_group=plapperkasten
+# this is where everything will be installed
+pk_app_path="/data/plapperkasten/plapperkasten"
+pk_name=plapperkasten
+pk_pipx_home_path=${pk_app_path/pipx}
+pk_app=${pk_pipx_home_path}/venvs/${pk_name}/bin/${pk_name}
 
 sudo tee -a /etc/systemd/system/plapperkasten.service <<EOF
 Description=start plapperkasten
@@ -189,9 +187,9 @@ sudo mv /etc/asound.conf /etc/ascound.conf.bk
 sudo tee /etc/asound.conf <<EOF
 pcm.hifiberryMiniAmp {
     type softvol
-    slave.pcm "plughw:0"
+    slave.pcm "plughw:1"
     control.name "Master"
-    control.card 0
+    control.card 1
 }
 pcm.!default {
     type plug
@@ -205,9 +203,9 @@ sudo alsactl restore
 ### Configure MPD
 
 ```bash
-# change user and group if not on ubuntu server
-pk_user=ubuntu
-pk_group=ubuntu
+# change user and group if not on Debian Bullseye after `plapperkasten-setup`
+pk_user=plapperkasten
+pk_group=plapperkasten
 # change path to where your data resides
 pk_data_path=/data/plapperkasten
 
@@ -287,7 +285,7 @@ sudo chmod +x /lib/systemd/system-shutdown/plapperkasten_poweroff.shutdown
   without being root - make sure to specify the appropriate user group:
 
 ```bash
-# change group if not on ubuntu server
+# change user and group if not on Debian Bullseye after `plapperkasten-setup`
 pk_group=ubuntu
 
 sudo tee -a /etc/udev/rules.d/99-userdev_input.rules <<EOF
@@ -312,7 +310,7 @@ make upgrade
 
 ```bash
 # this is where everything will be installed
-pk_app_path="~/plapperkasten"
+pk_app_path="/data/plapperkasten/plapperkasten"
 # use this python version
 pk_python_version="3.10.4"
 
@@ -343,7 +341,7 @@ sudo make uninstall
 
 ```bash
 # this is where everything will be installed
-pk_app_path="~/plapperkasten"
+pk_app_path="/data/plapperkasten/plapperkasten"
 # use this python version
 pk_python_version="3.10.4"
 
