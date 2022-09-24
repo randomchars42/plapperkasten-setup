@@ -19,10 +19,6 @@ audio_output {
         type            "alsa"
         name            "MPD"
         mixer_control   "Master"        # optional
-#       device          "hw:CARD=sndrpihifiberry,DEV=0" # optional
-#       mixer_type      "hardware"      # optional
-#       mixer_device    "default"       # optional
-#       mixer_index     "0"             # optional
 }
 playlist_plugin {
         name "m3u"
