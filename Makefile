@@ -72,10 +72,10 @@ $(APP_CONFIG_PATH)/mpdclient_status.map: templates/template_mpdclientstatusmap
 
 # make application available application after installing $(PIPX_MODULE) and
 # config files
+#  --system-site-packages is needed to include libs only installable via
+#  python3-gpiod on ubuntu
 $(APP): $(PIPX_MODULE) $(APP_CONFIG_PATH) $(APP_CONFIG_PATH)/config.yaml $(APP_CONFIG_PATH)/events.map $(APP_CONFIG_PATH)/mpdclient_status.map
 	@echo installing $(NAME)
-	#  --system-site-packages is needed to include libs only installable via
-	#  python3-gpiod on ubuntu
 	PIPX_HOME=$(PIPX_HOME_PATH) $(PIPX) install --system-site-packages $(NAME)
 
 run:
@@ -126,7 +126,7 @@ endif
 
 # create asound.conf if template_asound has changed
 /etc/asound.conf: templates/template_asound
-	[ -f /etc/asound.conf ] && sudo mv -n /etc/asound.conf /etc/asound.conf.bk
+	if [ -f /etc/asound.conf ]; then sudo mv -n /etc/asound.conf /etc/asound.conf.bk; fi;
 	sudo cp templates/template_asound /etc/asound.conf
 	-sudo alsactl restore
 
@@ -137,7 +137,7 @@ endif
 	sudo mkdir -p ${DATA_PATH}/Playlists
 	sudo mkdir -p ${DATA_PATH}/MPD
 	sudo chown -R ${INSTALL_USER}:${INSTALL_GROUP} ${DATA_PATH}
-	[ -f /etc/mpd.conf ] && sudo mv -n /etc/mpd.conf /etc/mpd.conf.bk
+	if [ -f /etc/mpd.conf ]; then sudo mv -n /etc/mpd.conf /etc/mpd.conf.bk; fi;
 	envsubst '$${INSTALL_USER} $${DATA_PATH}' < templates/template_mpd > templates/mpd.conf
 	sudo mv templates/mpd.conf /etc/mpd.conf
 	sudo systemctl restart mpd
@@ -154,11 +154,11 @@ uninstall: clean
 	- sudo rm /etc/udev/rules.d/99-userdev_input.rules
 	@echo restoring ALSA configuration
 	sudo rm /etc/asound.conf
-	[ -f /etc/asound.conf.bk ] && sudo mv /etc/asound.conf.bk /etc/asound.conf
+	if [ -f /etc/asound.conf.bk ]; then sudo mv /etc/asound.conf.bk /etc/asound.conf; fi;
 	sudo alsactl restore
 	@echo restoring MPD configuration
 	sudo rm /etc/mpd.conf
-	[ -f /etc/mpd.conf.bk ] && sudo mv /etc/mpd.conf.bk /etc/mpd.conf
+	if [ -f /etc/mpd.conf.bk ]; then sudo mv /etc/mpd.conf.bk /etc/mpd.conf; fi;
 	sudo systemctl restart mpd
 	@echo removing files
 	sudo rm -r $(APP_PATH)
