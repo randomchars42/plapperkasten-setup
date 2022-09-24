@@ -3,7 +3,7 @@ Description=start ${NAME}
 [Service]
 Type=simple
 RemainAfterExit=yes
-ExecStart=bash ${NAME}
+ExecStart=bash ${APP}
 User=${INSTALL_USER}
 Group=${INSTALL_GROUP}
 

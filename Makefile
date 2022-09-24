@@ -102,7 +102,7 @@ install: /etc/systemd/system/$(NAME).service /lib/systemd/system-shutdown/$(NAME
 
 # create service if template_service has changed
 /etc/systemd/system/$(NAME).service: templates/template_service
-	envsubst '$${NAME} $${INSTALL_USER} $${INSTALL_GROUP}' < templates/template_service > templates/$(NAME).service
+	envsubst '$${NAME} $${APP} $${INSTALL_USER} $${INSTALL_GROUP}' < templates/template_service > templates/$(NAME).service
 	sudo mv templates/$(NAME).service /etc/systemd/system/
 	sudo systemctl enable $(NAME).service
 
