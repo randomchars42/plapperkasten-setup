@@ -28,7 +28,7 @@ override APP := $(PIPX_HOME_PATH)/venvs/$(NAME)/bin/$(NAME)
 override APP_CONFIG_PATH := /home/$(INSTALL_USER)/.config/$(NAME)
 
 # files with those names should not trigger any recipe
-.PHONY = setup install clean uninstall run upgrade
+.PHONY = setup install clean uninstall run upgrade testsound
 
 # default target:
 #  - create app directory $(APP_PATH) - before
@@ -162,3 +162,7 @@ uninstall: clean
 	sudo systemctl restart mpd
 	@echo removing files
 	sudo rm -r $(APP_PATH)
+
+testsound:
+	sudo alsactl restore
+	speaker-test -c2 --test=wav -w /usr/share/sounds/alsa/Front_Center.wav
