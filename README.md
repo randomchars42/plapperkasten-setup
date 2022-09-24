@@ -11,8 +11,8 @@ For this we will use [plapperkasten](https://github.com/randomchars42/plapperkas
 
 ## Notes
 
-* The setup procedure is described for **Ubuntu Server 21.10** (or newer) though
-  it should work for **Debian bullseye** (or newer) as well.
+* The setup procedure is described for **Debian Bulsseye** though
+  it should work for **Ubuntu 21.10 Server** (or newer) as well.
 * This guide does a *headless* setup (meaning you won't attach a display or
   keyboard to your Raspberry Pi) so you are going to need a patch (LAN) cable to
   connect your Raspberry Pi with the network (WLAN?) router you have or your

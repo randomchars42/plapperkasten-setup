@@ -136,7 +136,7 @@ endif
 	sudo mkdir -p ${DATA_PATH}/Media/Music
 	sudo mkdir -p ${DATA_PATH}/Playlists
 	sudo mkdir -p ${DATA_PATH}/MPD
-	sudo chown -r ${INSTALL_USER}:${INSTALL_GROUP} ${DATA_PATH}
+	sudo chown -R ${INSTALL_USER}:${INSTALL_GROUP} ${DATA_PATH}
 	sudo mv -n /etc/mpd.conf /etc/mpd.conf.bk
 	envsubst '$${INSTALL_USER} $${DATA_PATH}' < templates/template_mpd > templates/mpd.conf
 	sudo mv templates/mpd.conf /etc/mpd.conf
