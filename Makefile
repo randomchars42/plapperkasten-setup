@@ -126,7 +126,7 @@ endif
 
 # create asound.conf if template_asound has changed
 /etc/asound.conf: templates/template_asound
-	sudo mv -n /etc/asound.conf /etc/asound.conf.bk
+	[ -f /etc/asound.conf ] && sudo mv -n /etc/asound.conf /etc/asound.conf.bk
 	sudo cp templates/template_asound /etc/asound.conf
 	-sudo alsactl restore
 
@@ -137,7 +137,7 @@ endif
 	sudo mkdir -p ${DATA_PATH}/Playlists
 	sudo mkdir -p ${DATA_PATH}/MPD
 	sudo chown -R ${INSTALL_USER}:${INSTALL_GROUP} ${DATA_PATH}
-	sudo mv -n /etc/mpd.conf /etc/mpd.conf.bk
+	[ -f /etc/mpd.conf ] && sudo mv -n /etc/mpd.conf /etc/mpd.conf.bk
 	envsubst '$${INSTALL_USER} $${DATA_PATH}' < templates/template_mpd > templates/mpd.conf
 	sudo mv templates/mpd.conf /etc/mpd.conf
 	sudo systemctl restart mpd
@@ -154,11 +154,11 @@ uninstall: clean
 	- sudo rm /etc/udev/rules.d/99-userdev_input.rules
 	@echo restoring ALSA configuration
 	sudo rm /etc/asound.conf
-	sudo mv /etc/asound.conf.bk /etc/asound.conf
+	[ -f /etc/asound.conf.bk ] && sudo mv /etc/asound.conf.bk /etc/asound.conf
 	sudo alsactl restore
 	@echo restoring MPD configuration
 	sudo rm /etc/mpd.conf
-	sudo mv /etc/mpd.conf.bk /etc/mpd.conf
+	[ -f /etc/mpd.conf.bk ] && sudo mv /etc/mpd.conf.bk /etc/mpd.conf
 	sudo systemctl restart mpd
 	@echo removing files
 	sudo rm -r $(APP_PATH)
