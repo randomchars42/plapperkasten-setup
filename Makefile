@@ -1,14 +1,15 @@
 # name of the application
 export NAME := plapperkasten
 # user and group under which the application will run
-export INSTALL_USER := ubuntu
-export INSTALL_GROUP := ubuntu
+# adapt if your user has a different name, perhaps on UBUNTU
+export INSTALL_USER := $(NAME)
+export INSTALL_GROUP := $(NAME)
+# path under which the media files reside (look at template_mpd)
+export DATA_PATH := /data/$(NAME)
 # path to install the application in
-APP_PATH := ~/$(NAME)
+APP_PATH := $(DATA_PATH)/$(NAME)
 # python version to use (must include patch number [major.minor.patch])
 PYTHON_VERSION := 3.10.4
-# path under which the media files reside (look at template_mpd)
-export DATA_PATH := /data/plapperkasten
 
 override MAKEFILE_DIR=$(dir $(firstword $(MAKEFILE_LIST)))
 # short python version the dirty way: remove trailing patch number
@@ -92,13 +93,12 @@ clean:
 	- PYENV_ROOT=$(PYENV_PATH) $(PYENV) uninstall $(PYTHON_VERSION)
 
 # integrate application into the system by
-# - making application available - before
-# - creating and enabling the system service - and
+# - creating and enabling the system service - before
 # - creating a shutdown routine - and
 # - creating a udev rule
 # - configuring ALSA
 # - configuring MPD
-install: setup /etc/systemd/system/$(NAME).service /lib/systemd/system-shutdown/$(NAME)_poweroff.shutdown /etc/udev/rules.d/99-userdev_input.rules /etc/asound.conf /etc/mpd.conf
+install: /etc/systemd/system/$(NAME).service /lib/systemd/system-shutdown/$(NAME)_poweroff.shutdown /etc/udev/rules.d/99-userdev_input.rules /etc/asound.conf /etc/mpd.conf
 
 # create service if template_service has changed
 /etc/systemd/system/$(NAME).service: templates/template_service
@@ -128,7 +128,7 @@ endif
 /etc/asound.conf: templates/template_asound
 	sudo mv -n /etc/asound.conf /etc/asound.conf.bk
 	sudo cp templates/template_asound /etc/asound.conf
-	sudo alsactl restore
+	-sudo alsactl restore
 
 # create mpd.conf if template_mpd has changed
 /etc/mpd.conf: templates/template_mpd
