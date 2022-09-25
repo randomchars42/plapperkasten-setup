@@ -84,6 +84,9 @@ run:
 upgrade:
 	PIPX_HOME=$(PIPX_HOME_PATH) $(PIPX) upgrade $(NAME)
 
+install_optional:
+	PIPX_HOME=$(PIPX_HOME_PATH) $(PIPX) inject $(NAME) gpiodmonitor
+
 clean:
 	@echo uninstalling $(NAME)
 	- PIPX_HOME=$(PIPX_HOME_PATH) $(PIPX) uninstall $(NAME)
