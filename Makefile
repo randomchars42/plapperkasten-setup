@@ -25,6 +25,7 @@ override PYENV := $(PYENV_PATH)/bin/pyenv
 override PIP := $(PYTHON) -m pip
 override PIPX := $(PYTHON) -m pipx
 override APP := $(PIPX_HOME_PATH)/venvs/$(NAME)/bin/$(NAME)
+export APP
 override APP_CONFIG_PATH := /home/$(INSTALL_USER)/.config/$(NAME)
 
 # files with those names should not trigger any recipe
