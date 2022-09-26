@@ -102,7 +102,7 @@ clean:
 # - creating a udev rule
 # - configuring ALSA
 # - configuring MPD
-install: /etc/systemd/system/$(NAME).service /lib/systemd/system-shutdown/$(NAME)_poweroff.shutdown /etc/udev/rules.d/99-userdev_input.rules /etc/asound.conf /etc/mpd.conf /home/$(INSTALL_USER)/.bash_aliases_$(NAME)
+install: /etc/systemd/system/$(NAME).service /lib/systemd/system-shutdown/$(NAME)_poweroff.shutdown /etc/udev/rules.d/99-userdev_input.rules /etc/asound.conf /etc/mpd.conf $(APP_PATH)/.bash_aliases
 
 # create service if template_service has changed
 /etc/systemd/system/$(NAME).service: templates/template_service
@@ -146,10 +146,11 @@ endif
 	sudo mv templates/mpd.conf /etc/mpd.conf
 	sudo systemctl restart mpd
 
-/home/$(INSTALL_USER)/.bash_aliases_$(NAME): templates/template_bash_aliases
+$(APP_PATH)/.bash_aliases: templates/template_bash_aliases
 	envsubst '$${NAME} $${APP_PATH} $${PIPX_HOME_PATH} $${PIPX}' < templates/template_bash_aliases > templates/bash_aliases
-	mv templates/bash_aliases /home/$(INSTALL_USER)/.bash_aliases_$(NAME)
-	@echo copy \"source .bash_aliases_$(NAME) into /home/$(INSTALL_USER)/.bashrc\"
+	mv templates/bash_aliases $(APP_PATH)/bash_aliases
+	chown ${INSTALL_USER}:$(INSTALL_GROUP) $(APP_PATH)/bash_aliases
+	@echo copy \"source $(APP_PATH)/bash_aliases into /home/$(INSTALL_USER)/.bashrc\"
 
 # uninstall system integration after removing the application
 uninstall: clean
