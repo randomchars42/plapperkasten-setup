@@ -7,7 +7,7 @@ export INSTALL_GROUP := $(NAME)
 # path under which the media files reside (look at template_mpd)
 export DATA_PATH := /data/$(NAME)
 # path to install the application in
-APP_PATH := $(DATA_PATH)/$(NAME)
+export APP_PATH := $(DATA_PATH)/$(NAME)
 # python version to use (must include patch number [major.minor.patch])
 PYTHON_VERSION := 3.10.4
 
