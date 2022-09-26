@@ -17,3 +17,5 @@ alias plk_stop="sudo systemctl stop plapperkasten"
 alias plk_reload="sudo systemctl reload plapperkasten"
 
 alias plk_log="sudo journalctl -u ${NAME}.service"
+
+alias plk_mpd_rescan="mpc update"
