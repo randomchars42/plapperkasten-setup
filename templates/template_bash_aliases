@@ -3,7 +3,7 @@
 export plk_app_path="${PIPX_HOME_PATH}/venvs/${NAME}/lib/python3.10/site-packages/${NAME}"
 alias plk_go_to_app="cd ${plk_app_path}"
 alias plk_edit_app="vim ${plk_app_path}"
-export plk_setup_path="${$DATA_PATH}/plapperkasten-setup"
+export plk_setup_path="${DATA_PATH}/plapperkasten-setup"
 alias plk_go_to_setup="cd ${plk_setup_path}"
 export plk_config_path="~/.config/${NAME}"
 alias plk_go_to_config="cd ${plk_config_path}"
