@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+export plk_app_path="${PIPX_HOME_PATH}/venvs/${NAME}/lib/python3.10/site-packages/${NAME}"
+alias plk_go_to_app="cd ${plk_app_path}"
+alias plk_edit_app="vim ${plk_app_path}"
+export plk_setup_path="${APP_PATH}"
+alias plk_go_to_setup="cd ${plk_setup_path}"
+export plk_config_path="~/.config/${NAME}"
+alias plk_go_to_config="cd ${plk_config_path}"
+alias plk_edit_config="vim ${plk_config_path}"
+export plk_pipx_path="${PIPX}"
+export plk_pipx_home_path="${PIPX_HOME_PATH}"
+alias plk_pipx_run="PIPX_HOME=${plk_pipx_home_path} ${plk_pipx_path}"
+
+alias plk_start="sudo systemctl start plapperkasten"
+alias plk_stop="sudo systemctl stop plapperkasten"
+alias plk_reload="sudo systemctl reload plapperkasten"
+
+alias plk_log="sudo journalctl -u $(NAME).service"
