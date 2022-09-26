@@ -146,7 +146,7 @@ endif
 	sudo mv templates/mpd.conf /etc/mpd.conf
 	sudo systemctl restart mpd
 
-/home/$(INSTALL_USER)/.bash_aliases_$(NAME): templates_bash_aliases
+/home/$(INSTALL_USER)/.bash_aliases_$(NAME): templates/template_bash_aliases
 	envsubst '$${NAME} $${APP_PATH} $${PIPX_HOME_PATH} $${PIPX}' < templates/template_bash_aliases > templates/bash_aliases
 	mv templates/bash_aliases /home/$(INSTALL_USER)/.bash_aliases_$(NAME)
 	@echo copy \"source .bash_aliases_$(NAME) into /home/$(INSTALL_USER)/.bashrc\"
