@@ -18,6 +18,7 @@ override PYTHON_VERSION_SHORT := $(basename $(PYTHON_VERSION))
 override PYENV_PATH := $(APP_PATH)/pyenv
 override PIPX_MODULE := $(PYENV_PATH)/versions/$(PYTHON_VERSION)/lib/python$(PYTHON_VERSION_SHORT)/site-packages/pipx/main.py
 override PIPX_HOME_PATH := $(APP_PATH)/pipx
+export PIPX_HOME_PATH
 # executables that will be installed
 override PYTHON_VERSION_PATH := $(PYENV_PATH)/versions/$(PYTHON_VERSION)
 override PYTHON := PYENV_ROOT=$(PYENV_PATH) $(PYTHON_VERSION_PATH)/bin/python
