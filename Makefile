@@ -25,6 +25,7 @@ override PYTHON := PYENV_ROOT=$(PYENV_PATH) $(PYTHON_VERSION_PATH)/bin/python
 override PYENV := $(PYENV_PATH)/bin/pyenv
 override PIP := $(PYTHON) -m pip
 override PIPX := $(PYTHON) -m pipx
+export PIPX
 override APP := $(PIPX_HOME_PATH)/venvs/$(NAME)/bin/$(NAME)
 export APP
 override APP_CONFIG_PATH := /home/$(INSTALL_USER)/.config/$(NAME)
