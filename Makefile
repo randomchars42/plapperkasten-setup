@@ -102,7 +102,7 @@ clean:
 # - creating a udev rule
 # - configuring ALSA
 # - configuring MPD
-install: /etc/systemd/system/$(NAME).service /lib/systemd/system-shutdown/$(NAME)_poweroff.shutdown /etc/udev/rules.d/99-userdev_input.rules /etc/asound.conf /etc/mpd.conf
+install: /etc/systemd/system/$(NAME).service /lib/systemd/system-shutdown/$(NAME)_poweroff.shutdown /etc/udev/rules.d/99-userdev_input.rules /etc/asound.conf /etc/mpd.conf /home/$(INSTALL_USER)/.bash_aliases_$(NAME)
 
 # create service if template_service has changed
 /etc/systemd/system/$(NAME).service: templates/template_service
