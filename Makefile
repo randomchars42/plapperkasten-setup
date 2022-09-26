@@ -148,7 +148,7 @@ endif
 	sudo systemctl restart mpd
 
 $(APP_PATH)/.bash_aliases: templates/template_bash_aliases
-	envsubst '$${NAME} $${APP_PATH} $${PIPX_HOME_PATH} $${PIPX}' < templates/template_bash_aliases > templates/bash_aliases
+	envsubst '$${NAME} $${APP_PATH} $${PIPX_HOME_PATH} $${PIPX} $${DATA_PATH}' < templates/template_bash_aliases > templates/bash_aliases
 	mv templates/bash_aliases $(APP_PATH)/bash_aliases
 	chown ${INSTALL_USER}:$(INSTALL_GROUP) $(APP_PATH)/bash_aliases
 	@echo copy \"source $(APP_PATH)/bash_aliases into /home/$(INSTALL_USER)/.bashrc\"
