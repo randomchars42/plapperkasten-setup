@@ -138,11 +138,11 @@ endif
 
 # create mpd.conf if template_mpd has changed
 /etc/mpd.conf: templates/template_mpd
-	sudo mkdir -p ${DATA_PATH}/Media/Audiobooks
-	sudo mkdir -p ${DATA_PATH}/Media/Music
-	sudo mkdir -p ${DATA_PATH}/Playlists
-	sudo mkdir -p ${DATA_PATH}/MPD
-	sudo chown -R ${INSTALL_USER}:${INSTALL_GROUP} ${DATA_PATH}
+	sudo mkdir -p $(DATA_PATH)/Media/Audiobooks
+	sudo mkdir -p $(DATA_PATH)/Media/Music
+	sudo mkdir -p $(DATA_PATH)/Playlists
+	sudo mkdir -p $(DATA_PATH)/MPD
+	sudo chown -R $(INSTALL_USER):$(INSTALL_GROUP) $(DATA_PATH)
 	if [ -f /etc/mpd.conf ]; then sudo mv -n /etc/mpd.conf /etc/mpd.conf.bk; fi;
 	envsubst '$${INSTALL_USER} $${DATA_PATH}' < templates/template_mpd > templates/mpd.conf
 	sudo mv templates/mpd.conf /etc/mpd.conf
@@ -151,7 +151,7 @@ endif
 $(APP_PATH)/.bash_aliases: templates/template_bash_aliases
 	envsubst '$${NAME} $${APP_PATH} $${PIPX_HOME_PATH} $${PIPX} $${DATA_PATH}' < templates/template_bash_aliases > templates/bash_aliases
 	mv templates/bash_aliases $(APP_PATH)/bash_aliases
-	chown ${INSTALL_USER}:$(INSTALL_GROUP) $(APP_PATH)/bash_aliases
+	chown $(INSTALL_USER):$(INSTALL_GROUP) $(APP_PATH)/bash_aliases
 	@echo copy \"source $(APP_PATH)/bash_aliases into /home/$(INSTALL_USER)/.bashrc\"
 
 #  fix on Debian Bullseye
