@@ -154,6 +154,14 @@ $(APP_PATH)/.bash_aliases: templates/template_bash_aliases
 	chown ${INSTALL_USER}:$(INSTALL_GROUP) $(APP_PATH)/bash_aliases
 	@echo copy \"source $(APP_PATH)/bash_aliases into /home/$(INSTALL_USER)/.bashrc\"
 
+#  fix on Debian Bullseye
+#  comes with 3.9 so when libgiod is compiled the object is for cpython3.9
+#  but we can copy it to 3.10
+#  TODO ship with source of libgpiod
+install_libgpiod: /data/plapperkasten/plapperkasten/pipx/venvs/plapperkasten/lib/python3.10/site-packages/gpiod.cpython-310-aarch64-linux-gnu.so
+	@if [ ! -f /lib/python3/dist-packages/gpiod.cpython-39-aarch64-linux-gnu.so ]; then echo "you must first install python3-libgpiod"
+	if [ -f /lib/python3/dist-packages/gpiod.cpython-39-aarch64-linux-gnu.so ]; then cp /lib/python3/dist-packages/gpiod.cpython-39-aarch64-linux-gnu.so /data/plapperkasten/plapperkasten/pipx/venvs/plapperkasten/lib/python3.10/site-packages/gpiod.cpython-310-aarch64-linux-gnu.so; fi;
+
 # uninstall system integration after removing the application
 uninstall: clean
 	@echo removing service
