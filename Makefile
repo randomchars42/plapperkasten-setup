@@ -61,15 +61,16 @@ $(PIPX_MODULE): $(PYTHON_VERSION_PATH)
 $(APP_CONFIG_PATH):
 	mkdir -p $(APP_CONFIG_PATH)
 
+$(APP_PATH)/asound_%.conf: templates/template_asound_%
+	cp -b $< $@
+
 install_config: $(APP_CONFIG_PATH)/config.yaml $(APP_PATH)/asound_%.conf
 install_events: $(APP_CONFIG_PATH)/events.map
 
 $(APP_CONFIG_PATH)/config.yaml: templates/template_pk_conf
-	@echo creating config.yaml if it does not already exist
-	cp -n templates/template_pk_conf $(APP_CONFIG_PATH)/config.yaml
-
-$(APP_PATH)/asound_%.conf: templates/template_asound_%
-	cp --backup=numbered $< $@
+	@echo creating config.yaml
+	cp --backup=numbered $(APP_CONFIG_PATH)/config.yaml $(APP_CONFIG_PATH)/config.yaml.bk
+	envsubst '$${INSTALL_USER} $${APP_PATH}' < templates/template_pk_conf > $(APP_CONFIG_PATH)/config.yaml
 
 $(APP_CONFIG_PATH)/events.map: templates/template_eventsmap
 	@echo creating events.map if it does not already exist
