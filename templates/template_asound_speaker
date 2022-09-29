@@ -1,0 +1,10 @@
+pcm.hifiberryMiniAmp {
+    type softvol
+    slave.pcm "plughw:1"
+    control.name "Master"
+    control.card 1
+}
+pcm.!default {
+    type plug
+    slave.pcm "hifiberryMiniAmp"
+}

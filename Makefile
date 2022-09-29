@@ -31,7 +31,7 @@ export APP
 override APP_CONFIG_PATH := /home/$(INSTALL_USER)/.config/$(NAME)
 
 # files with those names should not trigger any recipe
-.PHONY = setup install clean uninstall run upgrade testsound
+.PHONY = setup install clean uninstall run upgrade testsound install_libgpiod install_optional install_config install_events
 
 # default target:
 #  - create app directory $(APP_PATH) - before
@@ -61,9 +61,15 @@ $(PIPX_MODULE): $(PYTHON_VERSION_PATH)
 $(APP_CONFIG_PATH):
 	mkdir -p $(APP_CONFIG_PATH)
 
+install_config: $(APP_CONFIG_PATH)/config.yaml $(APP_PATH)/asound_%.conf
+install_events: $(APP_CONFIG_PATH)/events.map
+
 $(APP_CONFIG_PATH)/config.yaml: templates/template_pk_conf
 	@echo creating config.yaml if it does not already exist
 	cp -n templates/template_pk_conf $(APP_CONFIG_PATH)/config.yaml
+
+$(APP_PATH)/asound_%.conf: templates/template_asound_%
+	cp --backup=numbered $< $@
 
 $(APP_CONFIG_PATH)/events.map: templates/template_eventsmap
 	@echo creating events.map if it does not already exist
@@ -87,7 +93,7 @@ run:
 upgrade:
 	PIPX_HOME=$(PIPX_HOME_PATH) $(PIPX) upgrade $(NAME)
 
-install_optional:
+install_optional: install_libgpiod
 	PIPX_HOME=$(PIPX_HOME_PATH) $(PIPX) inject $(NAME) gpiodmonitor
 
 clean:
@@ -130,12 +136,6 @@ else
 	sudo mv templates/99-userdev_input.rules /etc/udev/rules.d/
 endif
 
-# create asound.conf if template_asound has changed
-/etc/asound.conf: templates/template_asound
-	if [ -f /etc/asound.conf ]; then sudo mv -n /etc/asound.conf /etc/asound.conf.bk; fi;
-	sudo cp templates/template_asound /etc/asound.conf
-	-sudo alsactl restore
-
 # create mpd.conf if template_mpd has changed
 /etc/mpd.conf: templates/template_mpd
 	sudo mkdir -p $(DATA_PATH)/Media/Audiobooks
@@ -158,7 +158,7 @@ $(APP_PATH)/.bash_aliases: templates/template_bash_aliases
 #  comes with 3.9 so when libgiod is compiled the object is for cpython3.9
 #  but we can copy it to 3.10
 #  TODO ship with source of libgpiod
-install_libgpiod: /data/plapperkasten/plapperkasten/pipx/venvs/plapperkasten/lib/python3.10/site-packages/gpiod.cpython-310-aarch64-linux-gnu.so
+install_libgpiod: $(APP_PATH)/pipx/venvs/$(NAME)/lib/python3.10/site-packages/gpiod.cpython-310-aarch64-linux-gnu.so
 	@if [ ! -f /lib/python3/dist-packages/gpiod.cpython-39-aarch64-linux-gnu.so ]; then echo "you must first install python3-libgpiod"
 	if [ -f /lib/python3/dist-packages/gpiod.cpython-39-aarch64-linux-gnu.so ]; then cp /lib/python3/dist-packages/gpiod.cpython-39-aarch64-linux-gnu.so /data/plapperkasten/plapperkasten/pipx/venvs/plapperkasten/lib/python3.10/site-packages/gpiod.cpython-310-aarch64-linux-gnu.so; fi;
 
@@ -173,8 +173,8 @@ uninstall: clean
 	@echo removing udev
 	- sudo rm /etc/udev/rules.d/99-userdev_input.rules
 	@echo restoring ALSA configuration
-	sudo rm /etc/asound.conf
-	if [ -f /etc/asound.conf.bk ]; then sudo mv /etc/asound.conf.bk /etc/asound.conf; fi;
+	sudo rm /home/$(INSTALL_USER)/.asoundrc
+	if [ -f /home/$(INSTALL_USER)/.asoundrc.bk ]; then sudo mv /home/$(INSTALL_USER)/.asoundrc.bk /home/$(INSTALL_USER)/.asoundrc; fi;
 	sudo alsactl restore
 	@echo restoring MPD configuration
 	sudo rm /etc/mpd.conf
@@ -182,9 +182,9 @@ uninstall: clean
 	sudo systemctl restart mpd
 	@echo removing files
 	sudo rm -r $(APP_PATH)
-	@echo removing bash_aliases
-	rm /home/$(INSTALL_USER)/.bash_aliases_$(NAME)
+	@echo removing config_files
+	rm -r /home/$(INSTALL_USER)/.config/$(NAME)
 
 testsound:
-	sudo alsactl restore
+	alsactl restore
 	speaker-test -c2 --test=wav -w /usr/share/sounds/alsa/Front_Center.wav

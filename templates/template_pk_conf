@@ -1,7 +1,8 @@
 # overwrite settings here
+---
 core:
   system:
-    debug: True
+    debug: False
   events:
     # pass those events to all plugins that listen
     passthrough: ['play','stop','toggle','next','previous','load_source','volume_increase','volume_decrease','volume_max']
@@ -23,8 +24,25 @@ plugins:
   autoshutdown:
     # shutdown after 5 minutes (5 x 60 s)
     idle_time: 300
-  volumealsa:
-    # maximal volume [%]
+  sound_alsa:
+    # the initial maximal volume [%]
     max: 100
-    # step volume up / down [%]
+    # the step to increase / decrease volume [% of total]
     step: 1
+    # the default card
+    default_card: 1
+    # the volume controls (adapt to your needs in ~/.asoundrc) or use profiles
+    # (see below)
+    # index is the card index
+    controls:
+      0: 'Headphone'
+      1: 'Master'
+    # dictionary of files containing ALSA profiles
+    # each file here must be usable as an `~/.asoundrc`
+    # the index is used to specify the default or to switch profiles
+    # leave empty for no
+    profiles:
+      'speaker': '${APP_PATH}/asound_speaker.conf'
+      'headphones': '${APP_PATH}/asound_headphones.conf'
+    # index of `profiles` above that serves as default
+    default_profile: 'speaker'
