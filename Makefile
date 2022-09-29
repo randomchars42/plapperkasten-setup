@@ -186,5 +186,15 @@ uninstall: clean
 	rm -r /home/$(INSTALL_USER)/.config/$(NAME)
 
 testsound:
-	alsactl restore
+	-alsactl restore
 	speaker-test -c2 --test=wav -w /usr/share/sounds/alsa/Front_Center.wav
+
+sound_speaker:
+	if [ -f ~/.asoundrc ]; then rm ~/.asoundrc; fi;
+	ln -s /data/plapperkasten/plapperkasten/asound_speaker.conf ~/.asoundrc
+	-alsactl restore
+
+sound_headphones:
+	if [ -f ~/.asoundrc ]; then rm ~/.asoundrc; fi;
+	ln -s /data/plapperkasten/plapperkasten/asound_headphones.conf ~/.asoundrc
+	-alsactl restore
