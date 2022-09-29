@@ -64,7 +64,7 @@ $(APP_CONFIG_PATH):
 $(APP_PATH)/asound_%.conf: templates/template_asound_%
 	cp -b $< $@
 
-install_config: $(APP_CONFIG_PATH)/config.yaml $(APP_PATH)/asound_%.conf
+install_config: $(APP_CONFIG_PATH)/config.yaml $(APP_PATH)/asound_headphones.conf $(APP_PATH)/asound_speaker.conf
 install_events: $(APP_CONFIG_PATH)/events.map
 
 $(APP_CONFIG_PATH)/config.yaml: templates/template_pk_conf
