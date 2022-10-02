@@ -149,6 +149,13 @@ endif
 	sudo mv templates/mpd.conf /etc/mpd.conf
 	sudo systemctl restart mpd
 
+install_pipewire:
+	echo 'APT::Default-Release "stable";' | sudo tee /etc/apt/apt.conf.d/99defaultrelease
+	echo "deb http://ftp.de.debian.org/debian/ testing main contrib non-free" | sudo tee /etc/apt/sources.list.d/testing.list
+	sudo apt update
+	sudo apt -t testing install pipewire wireplumber libspa-0.2-bluetooth pipewire-audio-client-libraries
+	cp /usr/share/doc/pipewire/examples/alsa.conf.d/99-pipewire-default.conf /etc/alsa/conf.d/
+
 $(APP_PATH)/.bash_aliases: templates/template_bash_aliases
 	envsubst '$${NAME} $${APP_PATH} $${PIPX_HOME_PATH} $${PIPX} $${DATA_PATH}' < templates/template_bash_aliases > templates/bash_aliases
 	mv templates/bash_aliases $(APP_PATH)/bash_aliases

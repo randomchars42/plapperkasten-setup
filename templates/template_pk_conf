@@ -24,7 +24,7 @@ plugins:
   autoshutdown:
     # shutdown after 5 minutes (5 x 60 s)
     idle_time: 300
-  sound_alsa:
+  soundalsa:
     # the initial maximal volume [%]
     max: 100
     # the step to increase / decrease volume [% of total]
