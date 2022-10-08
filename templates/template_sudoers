@@ -1,0 +1,1 @@
+plapperkasten ALL= NOPASSWD:/sbin/shutdown
