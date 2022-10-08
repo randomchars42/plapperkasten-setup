@@ -1,10 +1,22 @@
 # name of the application
 export NAME := plapperkasten
+
+# the os of the raspberry pi image
+export OS ?= debian
+
 # user and group under which the application will run
-# adapt if your user has a different name, perhaps on UBUNTU
-export INSTALL_USER := $(NAME)
-export INSTALL_GROUP := $(NAME)
-# path under which the media files reside (look at template_mpd)
+ifeq ($(OS),ubuntu)
+	# ubuntu's default user on the raspberry pi image of Ubuntu Server
+	export PLK_USER := ubuntu
+	export PLK_GROUP := ubuntu
+else
+	# the name can be set in the raspberry pi image of Debian Bullseye
+	# see prepare_system.sh and config.conf
+	export PLK_USER := $(NAME)
+	export PLK_GROUP := $(NAME)
+endif
+
+# path under which the media files reside
 export DATA_PATH := /data/$(NAME)
 # path to install the application in
 export APP_PATH := $(DATA_PATH)/$(NAME)
