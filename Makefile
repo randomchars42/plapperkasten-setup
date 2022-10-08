@@ -149,12 +149,32 @@ endif
 	sudo mv templates/mpd.conf /etc/mpd.conf
 	sudo systemctl restart mpd
 
-install_pipewire:
+install_pipewire: install_mpd
+	# https://wiki.debian.org/PipeWire
 	echo 'APT::Default-Release "stable";' | sudo tee /etc/apt/apt.conf.d/99defaultrelease
 	echo "deb http://ftp.de.debian.org/debian/ testing main contrib non-free" | sudo tee /etc/apt/sources.list.d/testing.list
 	sudo apt update
 	sudo apt -t testing install pipewire wireplumber libspa-0.2-bluetooth pipewire-audio-client-libraries
 	cp /usr/share/doc/pipewire/examples/alsa.conf.d/99-pipewire-default.conf /etc/alsa/conf.d/
+	# workaround for MPD / Mopidy running as system service
+	# https://github.com/mopidy/mopidy/issues/1974#issuecomment-797105715
+	sudo sed -i 's/#"tcp:4713"/"tcp:4713" /' /usr/share/pipewire/pipewire-pulse.conf
+	# enable lingering
+	# man 5 logind.con
+	# TODO make configurable
+	sudo mkdir /etc/systemd/logind.conf.d
+	sudo cp templates/template_logind_conf /etc/systemd/logind.conf.d/plapperkasten.conf
+	# fix volume control
+	# https://wiki.archlinux.org/title/WirePlumber
+	cat templates/template_wireplumber_alsa-custom_lua | sudo tee -a /usr/share/wireplumber/main.lua.d/50-alsa-config.lua
+	# fix RTKit
+	# https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Performance-tuning#rlimits
+	sudo cp templates/template_pipewire_limits /etc/security/limits.d/95-pipewire.conf
+	sudo sed -i 's%ExecStart=/usr/libexec/rtkit-daemon%ExecStart=/usr/libexec/rtkit-daemon --scheduling-policy=FIFO --our-realtime-priority=89 --max-realtime-priority=88 --min-nice-level=-19 --rttime-usec-max=2000000 --users-max=100 --processes-per-user-max=1000 --threads-per-user-max=10000 --actions-burst-sec=10 --actions-per-burst-max=1000 --canary-cheep-msec=30000 --canary-watchdog-msec=60000%' /lib/systemd/system/rtkit-daemon.service
+	sudo usermod -a -G pipewire $(INSTALL_USER)
+
+install_mpd:
+	sudo apt -t testing install mpd
 
 $(APP_PATH)/.bash_aliases: templates/template_bash_aliases
 	envsubst '$${NAME} $${APP_PATH} $${PIPX_HOME_PATH} $${PIPX} $${DATA_PATH}' < templates/template_bash_aliases > templates/bash_aliases
@@ -196,6 +216,9 @@ uninstall: clean
 testsound:
 	-alsactl restore
 	speaker-test -c2 --test=wav -w /usr/share/sounds/alsa/Front_Center.wav
+
+test_pipewire:
+	pw-play --target=63 /usr/share/sounds/alsa/Front_Center.wav
 
 sound_speaker:
 	if [ -f ~/.asoundrc ]; then rm ~/.asoundrc; fi;

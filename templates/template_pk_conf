@@ -5,10 +5,10 @@ core:
     debug: False
   events:
     # pass those events to all plugins that listen
-    passthrough: ['play','stop','toggle','next','previous','load_source','volume_increase','volume_decrease','volume_max']
+    passthrough: ['play','stop','toggle','next','previous','load_source','volume_increase','volume_decrease','volume_max','toggle_pwwp_sink']
   plugins:
     # do not load example plugin
-    blacklist: ['example']
+    blacklist: ['example', 'soundalsa']
 plugins:
   inputgpiod:
     chip: 0
@@ -46,3 +46,14 @@ plugins:
       'headphones': '${APP_PATH}/asound_headphones.conf'
     # index of `profiles` above that serves as default
     default_profile: 'speaker'
+  soundpwwp:
+    # the initial maximal volume [%]
+    max: 50
+    # the step to increase / decrease volume [% of total]
+    step: 1
+    # the sink to set at startup (`node.name` or 'default')
+    # find the `node.name` using `pw-cli ls Node`
+    # 'default' uses the magical '@DEFAULT_AUDIO_SINK@'
+    # built-in audio card: 'alsa_output.platform-bcm2835_audio.stereo-fallback'
+    # hifiberry dac: 'alsa_output.platform-soc_sound.stereo-fallback'
+    default_sink: 'default'
