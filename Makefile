@@ -182,6 +182,17 @@ $(APP_PATH)/.bash_aliases: templates/template_bash_aliases
 	chown $(INSTALL_USER):$(INSTALL_GROUP) $(APP_PATH)/bash_aliases
 	@echo copy \"source $(APP_PATH)/bash_aliases into /home/$(INSTALL_USER)/.bashrc\"
 
+install_mopidy:
+	sudo mkdir -p /usr/local/share/keyrings
+	sudo wget -q -O /usr/local/share/keyrings/mopidy-archive-keyring.gpg https://apt.mopidy.com/mopidy.gpg
+	sudo wget -q -O /etc/apt/sources.list.d/mopidy.list https://apt.mopidy.com/buster.list
+	sudo apt update
+	sudo apt install mopidy mopidy-mpd mopidy-local
+	systemctl --user enable mopidy.service
+	sudo mkdir -p $(DATA_PATH)/Mopidy/config
+	sudo mkdir -p $(DATA_PATH)/Mopidy/cache
+	sudo mkdir -p $(DATA_PATH)/Mopidy/data
+
 #  fix on Debian Bullseye
 #  comes with 3.9 so when libgiod is compiled the object is for cpython3.9
 #  but we can copy it to 3.10
