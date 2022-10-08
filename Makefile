@@ -137,6 +137,9 @@ else
 	sudo mv templates/99-userdev_input.rules /etc/udev/rules.d/
 endif
 
+/etc/sudoers.d/010_plapperkasten: templates/template_sudoers
+	sudo cp templates/template_sudoers /etc/sudoers.d/010_plapperkasten
+
 # create mpd.conf if template_mpd has changed
 /etc/mpd.conf: templates/template_mpd
 	sudo mkdir -p $(DATA_PATH)/Media/Audiobooks
