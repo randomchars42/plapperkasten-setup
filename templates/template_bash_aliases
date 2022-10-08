@@ -1,21 +1,49 @@
 #!/usr/bin/env bash
+echo "Plapperkasten :)"
 
-export plk_app_path="${PIPX_HOME_PATH}/venvs/${NAME}/lib/python3.10/site-packages/${NAME}"
+export plk_app_path="${APP_PATH}"
 alias plk_go_to_app="cd ${plk_app_path}"
-alias plk_edit_app="vim ${plk_app_path}"
+
+export plk_code_path="${PIPX_HOME_PATH}/venvs/${NAME}/lib/python3.10/site-packages/${NAME}"
+alias plk_go_to_code="cd ${plk_code_path}"
+alias plk_edit_code="vim ${plk_code_path}"
+
 export plk_setup_path="${DATA_PATH}/plapperkasten-setup"
 alias plk_go_to_setup="cd ${plk_setup_path}"
+alias plk_make="make --directory=${plk_setup_path}"
+
 export plk_config_path="~/.config/${NAME}"
 alias plk_go_to_config="cd ${plk_config_path}"
 alias plk_edit_config="vim ${plk_config_path}"
+
 export plk_pipx_home_path="${PIPX_HOME_PATH}"
 alias plk_pipx_run="PIPX_HOME=${plk_pipx_home_path} ${PIPX}"
+
 alias plk_python_run="PIPX_HOME=${plk_pipx_home_path} ${plk_pipx_home_path}/venvs/${NAME}/bin/python"
 
-alias plk_start="sudo systemctl start plapperkasten"
-alias plk_stop="sudo systemctl stop plapperkasten"
-alias plk_reload="sudo systemctl reload plapperkasten"
+alias plk_start="systemctl --user start plapperkasten"
+alias plk_status="systemctl --user status plapperkasten"
+alias plk_restart="systemctl --user restart plapperkasten"
+alias plk_stop="systemctl --user stop plapperkasten"
 
-alias plk_log="sudo journalctl -u ${NAME}.service"
+alias plk_log="journalctl --user -r -u ${NAME}.service"
+
+alias plk_aliases="vim ${APP_PATH}/bash_aliases"
+alias plk_aliases_source=". ~/.bash_aliases"
 
 alias plk_mpd_rescan="mpc update"
+
+alias pw_start="systemctl --user start pipewire pipewire.socket pipewire-pulse pipewire-pulse.socket wireplumber"
+alias pw_status="systemctl --user status pipewire pipewire.socket pipewire-pulse pipewire-pulse.socket wireplumber"
+alias pw_restart="systemctl --user restart pipewire pipewire.socket pipewire-pulse pipewire-pulse.socket wireplumber"
+alias pw_stop="systemctl --user stop pipewire pipewire.socket pipewire-pulse pipewire-pulse.socket wireplumber"
+alias pw_enable="systemctl --user enable pipewire pipewire.socket pipewire-pulse pipewire-pulse.socket wireplumber"
+alias pw_disable="systemctl --user disable pipewire pipewire.socket pipewire-pulse pipewire-pulse.socket wireplumber"
+
+alias mpd_start="sudo systemctl start mpd.service mpd.socket"
+alias mpd_status="sudo systemctl status mpd.service mpd.socket"
+alias mpd_restart="sudo systemctl restart mpd.service mpd.socket"
+alias mpd_stop="sudo systemctl stop mpd.service mpd.socket"
+alias mpd_enable="sudo systemctl enable mpd.service mpd.socket"
+alias mpd_disable="sudo systemctl disable mpd.service mpd.socket"
+alias mpd_edit="sudo vim /etc/mpd.conf"

@@ -7,7 +7,7 @@
 25_short|next
 27_short|previous
 # register events emitted by inputdevinputevent
-1455270947|toggle_alsa_profile|headphones
+0145270947|toggle_pwwp_sink|alsa_output.platform-bcm2835_audio.stereo-fallback
 1085983479|load_source|use=Mpdclient|key=Hoerbuch - Bei der Feuerwehr wird der Kaffee kalt.m3u
 1063122871|load_source|use=Mpdclient|key=Hoerbuch - Hummel Bommel und die Zeit.m3u
 1063103927|load_source|use=Mpdclient|key=Hoerbuch - Rabe Socke Alles bitte.m3u

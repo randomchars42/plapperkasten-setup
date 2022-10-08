@@ -1,0 +1,6 @@
+[Login]
+#NAutoVTs=6
+#ReserveVT=6
+KillUserProcesses=yes
+#KillOnlyUsers=
+KillExcludeUsers=root plapperkasten

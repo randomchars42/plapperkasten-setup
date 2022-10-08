@@ -4,8 +4,9 @@ Description=start ${NAME}
 Type=simple
 RemainAfterExit=yes
 ExecStart=${APP}
-User=${INSTALL_USER}
-Group=${INSTALL_GROUP}
+#User=${INSTALL_USER}
+#Group=${INSTALL_GROUP}
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
+#WantedBy=multi-user.target
