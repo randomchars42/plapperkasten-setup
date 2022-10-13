@@ -3,4 +3,4 @@
 #ReserveVT=6
 KillUserProcesses=yes
 #KillOnlyUsers=
-KillExcludeUsers=root plapperkasten
+KillExcludeUsers=root ${USER}

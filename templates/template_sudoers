@@ -1,1 +1,1 @@
-plapperkasten ALL= NOPASSWD:/sbin/shutdown
+${USER} ALL= NOPASSWD:/sbin/shutdown

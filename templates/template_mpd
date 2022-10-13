@@ -4,7 +4,7 @@ db_file                 "${DATA_PATH}/MPD/tag_cache"
 log_file                "${DATA_PATH}/MPD/mpd.log"
 state_file              "${DATA_PATH}/MPD/state"
 sticker_file            "${DATA_PATH}/MPD/sticker.sql"
-user                    "${INSTALL_USER}"
+user                    "${USER}"
 group                   "audio"
 bind_to_address         "any"
 restore_paused          "yes"
@@ -13,13 +13,14 @@ replaygain              "auto"
 volume_normalization    "yes"
 filesystem_charset      "UTF-8"
 input {
-        plugin "curl"
+        plugin          "curl"
 }
 audio_output {
-        type            "alsa"
+        type            "pulse"
         name            "MPD"
+        server          "127.0.0.1:4713"
 }
 playlist_plugin {
-        name "m3u"
-        enabled "true"
+        name            "m3u"
+        enabled         "true"
 }

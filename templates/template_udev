@@ -1,4 +1,4 @@
 # make single pins / lines / events accessible
-KERNEL=="event*", SUBSYSTEM=="input", GROUP="${INSTALL_GROUP}", MODE="660"
+KERNEL=="event*", SUBSYSTEM=="input", GROUP="${GROUP}", MODE="660"
 # make the gpiochips accessibel
-KERNEL=="gpiochip*", SUBSYSTEM=="gpio", GROUP="${INSTALL_GROUP}", MODE="660"
+KERNEL=="gpiochip*", SUBSYSTEM=="gpio", GROUP="${GROUP}", MODE="660"

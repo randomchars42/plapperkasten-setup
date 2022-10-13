@@ -1,7 +1,7 @@
 [core]
-cache_dir = /data/plapperkasten/Mopidy/cache
-config_dir = /data/plapperkasten/Mopidy/config
-data_dir = /data/plapperkasten/Mopidy/data
+cache_dir = ${DATA_PATH}/Mopidy/cache
+config_dir = ${DATA_PATH}/Mopidy/config
+data_dir = ${DATA_PATH}/Mopidy/data
 max_tracklist_length = 10000
 restore_state = false
 
@@ -40,12 +40,12 @@ default_app = mopidy
 
 [local]
 enabled = true
-media_dir = /data/plapperkasten/Media/
+media_dir = ${DATA_PATH}/Media/
 
 [file]
 enabled = true
 media_dirs =
-  /data/plapperkasten/Media/|plapperkasten
+  ${DATA_PATH}/Media/|Media
 show_dotfiles = false
 excluded_file_extensions =
   .directory
@@ -63,7 +63,7 @@ metadata_timeout = 1000
 
 [m3u]
 enabled = true
-playlists_dir = /data/plapperkasten/Playlists
-base_dir = /data/plapperkasten/Media
+playlists_dir = ${DATA_PATH}/Playlists
+base_dir = ${DATA_PATH}/Media
 default_encoding = utf-8
 default_extension = .m3u8
