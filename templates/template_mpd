@@ -1,5 +1,5 @@
 music_directory         "${DATA_PATH}/Media"
-playlist_directory      "${DATA_PATH}/Playlists"
+playlist_directory      "${DATA_PATH}/MPD/playlists"
 db_file                 "${DATA_PATH}/MPD/tag_cache"
 log_file                "${DATA_PATH}/MPD/mpd.log"
 state_file              "${DATA_PATH}/MPD/state"

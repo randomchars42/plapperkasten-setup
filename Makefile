@@ -282,7 +282,8 @@ configure_mpd: /etc/mpd.conf
 	| root \
 	install_mpd \
 	$(DATA_PATH)/MPD \
-	$(DATA_PATH)/Playlists \
+	$(DATA_PATH)/mpd/playlists \
+	$(DATA_PATH)/Media/Playlists \
 	$(DATA_PATH)/Media/Music \
 	$(DATA_PATH)/Media/Audiobooks
 	@echo "setting up mpd"
@@ -313,7 +314,7 @@ configure_mopidy: /etc/mopidy/mopidy.conf
 	$(DATA_PATH)/Mopidy/config \
 	$(DATA_PATH)/Mopidy/cache \
 	$(DATA_PATH)/Mopidy/data \
-	$(DATA_PATH)/Playlists \
+	$(DATA_PATH)/Media/Playlists \
 	$(DATA_PATH)/Media/Music \
 	$(DATA_PATH)/Media/Audiobooks
 	@echo "setting up mopidy"

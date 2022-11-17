@@ -63,7 +63,7 @@ metadata_timeout = 1000
 
 [m3u]
 enabled = true
-playlists_dir = ${DATA_PATH}/Playlists
-base_dir = ${DATA_PATH}/Media
+playlists_dir = ${DATA_PATH}/Media/Playlists
+base_dir = ${DATA_PATH}/Media/Playlists
 default_encoding = utf-8
 default_extension = .m3u8
