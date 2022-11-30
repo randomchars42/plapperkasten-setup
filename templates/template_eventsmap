@@ -2,10 +2,14 @@
 12_short|toggle
 12_long|stop
 13_short|volume_increase
+13_pulsed|volume_increase
 17_long|shutdown
 24_short|volume_decrease
+24_pulsed|volume_decrease
 25_short|next
+25_pulsed|next
 27_short|previous
+27_pulsed|previous
 # register events emitted by inputdevinputevent
 0145270947|toggle_pwwp_sink|alsa_output.platform-bcm2835_audio.stereo-fallback
 1085983479|load_source|use=Mpdclient|key=Hoerbuch - Bei der Feuerwehr wird der Kaffee kalt.m3u

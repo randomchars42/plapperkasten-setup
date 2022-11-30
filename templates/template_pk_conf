@@ -16,8 +16,13 @@ plugins:
     press_short: [27,12,25,13,24]
     # accept additional long press events from those pins
     press_long: [12,17]
+    # the BCM number of the pins to fire repetitively while active
+    press_pulse: [27,25,13,24]
+    # the number of seconds between two pulsed "BCMNUMBER_pulsed" signals
+    # on monitored pins (see above)
+    press_pulse_interval: 0.3
     # duration in seconds
-    long_press_duration: 2
+    long_press_duration: 1.5
   inputdevinputevent:
     # RFID device sends on /dev/input/event0
     devices: ['/dev/input/event0']
