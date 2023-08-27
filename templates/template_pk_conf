@@ -79,3 +79,20 @@ plugins:
     # built-in audio card: 'alsa_output.platform-bcm2835_audio.stereo-fallback'
     # hifiberry dac: 'alsa_output.platform-soc_sound.stereo-fallback'
     default_sink: 'default'
+  espeak:
+    # the amplitude to use (between 1 and 200)
+    amplitude: '200'
+    # the app to use (`espeak` or `espeak-ng`)
+    app: 'espeak-ng'
+    # how to output the date
+    format-date: 'Heute ist %A der %d. %B %Y'
+    # how to output the date
+    format-day: 'Heute ist %A'
+    # how to output the time
+    format-time: 'Es ist %H Uhr und %M Minuten'
+    # locale for `strftime()`
+    format-locale: 'de_DE'
+    # the voice to use (must be installed)
+    voice: 'de'
+    # pitch of the voice between 1 and 99
+    pitch: '50'
