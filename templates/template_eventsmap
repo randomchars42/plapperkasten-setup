@@ -12,47 +12,4 @@
 27_pulsed|previous
 # register events emitted by inputdevinputevent
 0145270947|toggle_pwwp_sink|alsa_output.platform-bcm2835_audio.stereo-fallback
-1085983479|load_source|use=Mpdclient|key=Hoerbuch - Bei der Feuerwehr wird der Kaffee kalt.m3u
-1063122871|load_source|use=Mpdclient|key=Hoerbuch - Hummel Bommel und die Zeit.m3u
-1063103927|load_source|use=Mpdclient|key=Hoerbuch - Rabe Socke Alles bitte.m3u
-0163103187|load_source|use=Mpdclient|key=Hoerbuch - Sendung mit dem Elefanten.m3u
-0144738451|load_source|use=Mpdclient|key=Hoerbuch - Sendung mit dem Elefanten - Meine liebsten Tiere.m3u
-0173447971|load_source|use=Mpdclient|key=Hoerbuch - Sendung mit dem Elefanten - Schlaf schoen!.m3u
-1062691719|load_source|use=Mpdclient|key=Hoerbuch - Siebenschlaefer Adventkalender.m3u
-1062043639|load_source|use=Mpdclient|key=Hoerbuch - Siebenschlaefer Gutenachtgeschichten.m3u
-0166215891|load_source|use=Mpdclient|key=Hoerbuch - Kokosnuss und der chinesische Drache.m3u
-0140199187|load_source|use=Mpdclient|key=Hoerbuch - Lieselotte Ein Geburtstagsfest fuer Lieselotte.m3u
-0164636323|load_source|use=Mpdclient|key=Hoerbuch - Lieselotte Ein Platz nur fuer Lieselotte.m3u
-0171959347|load_source|use=Mpdclient|key=Hoerbuch - Lieselotte Ferien mit Lieselotte.m3u
-0166533507|load_source|use=Mpdclient|key=Hoerbuch - Lieselotte Fruehlingszeit mit Lieselotte.m3u
-0143912419|load_source|use=Mpdclient|key=Hoerbuch - Lieselotte Lieselotte bleibt wach.m3u
-0173953635|load_source|use=Mpdclient|key=Hoerbuch - Lieselotte Lieselotte hat Langeweile.m3u
-0143301443|load_source|use=Mpdclient|key=Hoerbuch - Lieselotte Lieselotte im Schnee.m3u
-0138877507|load_source|use=Mpdclient|key=Hoerbuch - Lieselotte Lieselotte ist krank.m3u
-0140342723|load_source|use=Mpdclient|key=Hoerbuch - Lieselotte Lieselotte lauert.m3u
-0172572915|load_source|use=Mpdclient|key=Hoerbuch - Lieselotte Lieselotte macht Urlaub.m3u
-0138350835|load_source|use=Mpdclient|key=Hoerbuch - Lieselotte Lieselotte sucht.m3u
-0143790307|load_source|use=Mpdclient|key=Hoerbuch - Lieselotte Lieselotte sucht einen Schatz.m3u
-0142854659|load_source|use=Mpdclient|key=Hoerbuch - Lieselotte Lieselottes Weihnachtsgeschenk.m3u
-0173002899|load_source|use=Mpdclient|key=Hoerbuch - Lieselotte Lieselotte versteckt sich.m3u
-0169418707|load_source|use=Mpdclient|key=Hoerbuch - Lieselotte Lieselotte will nicht baden.m3u
-0138824531|load_source|use=Mpdclient|key=Hoerbuch - Berti und seine Brueder und die Schokoladenkugel des Boesen.m3u
-1061083287|load_source|use=Mpdclient|key=Kinder - Fruehling.m3u
-1078580087|load_source|use=Mpdclient|key=Kinder - Mix.m3u
-1063809911|load_source|use=Mpdclient|key=Kinder - Weihnachten Rolf Zuckowski.m3u
-0562022763|load_source|use=Mpdclient|key=Kinder - Weihnachten.m3u
-1079773671|load_source|use=Mpdclient|key=Thomas Loefke & Norland Wind.m3u
-0145884547|load_source|use=Mpdclient|key=Hoerbuch - Die Fuchsbande 1 Detektivbox 1 & 2.m3u
-0177265107|load_source|use=Mpdclient|key=Hoerbuch - Die Fuchsbande 1 Detektivbox 3 & 4.m3u
-0141971283|load_source|use=Mpdclient|key=Hoerbuch - Die Fuchsbande 1 Detektivbox 5 & 6.m3u
-0145163107|load_source|use=Mpdclient|key=Hoerbuch - Der achtsame Tiger - Das Musikhoerspiel.m3u
-0142647955|load_source|use=Mpdclient|key=Hoerbuch - Pettersson und Findus TV-Serie.m3u
-0133686355|load_source|use=Mpdclient|key=Hoerbuch - Pettersson und Findus Wie Findus zu Pettersson kam.m3u
-0140733827|load_source|use=Mpdclient|key=Hoerbuch - Pettersson und Findus Pettersson zeltet.m3u
-0175571235|load_source|use=Mpdclient|key=Hoerbuch - Pettersson und Findus Armer Pettersson.m3u
-0137086147|load_source|use=Mpdclient|key=Hoerbuch - Lars der Eisbaer Bring uns nach Hause.m3u
-0175276451|load_source|use=Mpdclient|key=Hoerbuch - Felix der Hase Weltbeste Briefe.m3u
-0166480531|load_source|use=Mpdclient|key=Hoerbuch - Felix der Hase Kinder der Welt.m3u
-0141448627|load_source|use=Mpdclient|key=Hoerbuch - Felix der Hase Zirkusbriefe.m3u
-0139968451|load_source|use=Mpdclient|key=Hoerbuch - Felix der Hase Verflixte Zeitmaschine.m3u
-0163996771|load_source|use=Mpdclient|key=Hoerbuch - Felix der Hase Liederalbum.m3
+1085983479|load_source|use=Mpdclient|key=path/tp/example/playlist.m3u
