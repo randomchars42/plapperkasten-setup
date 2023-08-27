@@ -18,6 +18,7 @@ alias plk_edit_config="vim ${plk_config_path}"
 
 export plk_pipx_home_path="${PIPX_HOME_PATH}"
 alias plk_pipx_run="PIPX_HOME=${plk_pipx_home_path} ${PIPX}"
+alias plk_pipx_run="PIPX_HOME=${plk_pipx_home_path} ${PIPX} upgrade ${NAME}"
 
 alias plk_python_run="PIPX_HOME=${plk_pipx_home_path} ${plk_pipx_home_path}/venvs/${NAME}/bin/python"
 
